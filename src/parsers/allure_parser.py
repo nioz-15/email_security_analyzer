@@ -25,6 +25,7 @@ class AllureParser:
     def __init__(self, reports_folder: str):
         """Initialize the parser with reports folder path."""
         self.reports_folder = Path(reports_folder)
+        self.processed_report_name = None  # Store the name of the processed report
 
     def extract_failed_mail_tests(self) -> List[FailedTest]:
         """Extract ONLY tests with AssertionError (true failures) with EMAIL-BASED deduplication."""
@@ -40,6 +41,10 @@ class AllureParser:
 
         for html_file in html_files:
             logger.info(f"Processing: {html_file.name}")
+
+            # Store the first (main) report name for use in final report naming
+            if self.processed_report_name is None:
+                self.processed_report_name = html_file.stem  # filename without extension
 
             try:
                 with open(html_file, 'r', encoding='utf-8') as f:
@@ -62,6 +67,10 @@ class AllureParser:
         self._log_final_results(all_failed_tests)
 
         return all_failed_tests
+
+    def get_processed_report_name(self) -> str:
+        """Get the name of the processed report for use in final report naming."""
+        return self.processed_report_name or "unknown_report"
 
     def _extract_assertion_error_failures_only(self, content: str, source_file: str) -> List[FailedTest]:
         """Extract ONLY tests that have AssertionError from base64 sections in script tags."""
@@ -267,7 +276,7 @@ class AllureParser:
         # Must look like an email address
         email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
         if not re.match(email_pattern, email):
-            logger.warning(f"      ❌ Rejecting email (invalid format): {email}")
+            logger.warning(f"      Rejecting email (invalid format): {email}")
             return ""
 
         logger.info(f"      ✅ Cleaned email: {raw_email[:50]} → {email}")

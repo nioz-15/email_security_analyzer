@@ -24,7 +24,8 @@ class HTMLReporter:
         self.output_dir = settings.REPORTS_DIR
         self.output_dir.mkdir(exist_ok=True)
 
-    async def generate_professional_report(self, reports: List[CompleteTestReport]) -> Path:
+    async def generate_professional_report(self, reports: List[CompleteTestReport],
+                                          source_report_name: str = None) -> Path:
         """Generate enhanced professional report with screenshots and better UI."""
 
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -40,8 +41,13 @@ class HTMLReporter:
         # Generate HTML report
         html_content = self._generate_html_content(reports, summary, timestamp)
 
-        # Save the report
-        html_path = self.output_dir / f"email_security_dashboard_{timestamp}.html"
+        # Create filename with source report name
+        if source_report_name:
+            html_filename = f"ES_AI_Report-{source_report_name}.html"
+        else:
+            html_filename = f"ES_AI_Report-{timestamp}.html"
+
+        html_path = self.output_dir / html_filename
         with open(html_path, 'w', encoding='utf-8') as f:
             f.write(html_content)
 
@@ -51,7 +57,7 @@ class HTMLReporter:
         return html_path
 
     async def _setup_screenshots(self, reports: List[CompleteTestReport],
-                                 screenshots_web_dir: Path, timestamp: str):
+                                screenshots_web_dir: Path, timestamp: str):
         """Copy screenshots and update paths for web access."""
 
         logger.info(f"Setting up screenshots directory: {screenshots_web_dir}")
@@ -65,8 +71,8 @@ class HTMLReporter:
                 logger.info(f"   File exists: {original_path.exists()}")
 
                 if original_path.exists():
-                    # Create simple, predictable filename
-                    screenshot_filename = f"email_{i + 1}_{report.failed_test.mail_type}_{timestamp}.png"
+                    # Use original filename (already based on subject)
+                    screenshot_filename = original_path.name
                     screenshot_dest = screenshots_web_dir / screenshot_filename
 
                     try:
@@ -90,7 +96,7 @@ class HTMLReporter:
                 report.mailbox_verification.screenshot_path = ""
 
     def _generate_html_content(self, reports: List[CompleteTestReport],
-                               summary: TestSummary, timestamp: str) -> str:
+                              summary: TestSummary, timestamp: str) -> str:
         """Generate the complete HTML content."""
 
         html_content = f"""
@@ -295,6 +301,20 @@ class HTMLReporter:
 
     def _generate_test_configuration_section(self, report: CompleteTestReport) -> str:
         """Generate test configuration section."""
+        # Format timing information
+        sent_time_str = "Unknown"
+        arrived_time_str = "Unknown"
+        delay_str = "Unknown"
+
+        if report.failed_test.sent_timestamp:
+            sent_time_str = report.failed_test.sent_timestamp.strftime("%Y-%m-%d %H:%M:%S")
+
+        if report.mailbox_verification.verification_timestamp:
+            arrived_time_str = report.mailbox_verification.verification_timestamp.strftime("%Y-%m-%d %H:%M:%S")
+
+        if report.mailbox_verification.delivery_delay_minutes is not None:
+            delay_str = f"{report.mailbox_verification.delivery_delay_minutes:.1f} minutes"
+
         return f"""
         <div class="content-section">
             <div class="section-title">
@@ -329,6 +349,24 @@ class HTMLReporter:
                 <div class="detail-item">
                     <div class="detail-label">Test Context</div>
                     <div class="detail-value">{report.failed_test.test_name}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Sent Time</div>
+                    <div class="detail-value">
+                        <i class="fas fa-paper-plane"></i> {sent_time_str}
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Arrived Time</div>
+                    <div class="detail-value">
+                        <i class="fas fa-inbox"></i> {arrived_time_str}
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Delivery Delay</div>
+                    <div class="detail-value">
+                        <i class="fas fa-clock"></i> {delay_str}
+                    </div>
                 </div>
             </div>
         </div>

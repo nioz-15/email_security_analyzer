@@ -10,9 +10,7 @@ import logging
 from datetime import datetime
 from pathlib import Path
 from typing import Dict
-
 from playwright.async_api import async_playwright, Page, Browser
-
 from ..models.data_models import FailedTest, MailVerificationResult
 from config.settings import settings
 
@@ -33,9 +31,9 @@ class PlaywrightMailboxVerifier:
     async def verify_mail_delivery(self, failed_test: FailedTest) -> MailVerificationResult:
         """Verify mail delivery with proper search logic."""
 
-        logger.info(f"Verifying mail for: {failed_test.mail_address}")
-        logger.info(f"Searching for ORIGINAL subject: {failed_test.mail_subject[:50]}...")
-        logger.info(f"Expected behavior: {failed_test.expected_behavior}")
+        logger.info(f"🌐 Verifying mail for: {failed_test.mail_address}")
+        logger.info(f"📧 Searching for ORIGINAL subject: {failed_test.mail_subject[:50]}...")
+        logger.info(f"🔍 Expected behavior: {failed_test.expected_behavior}")
 
         try:
             await self._init_browser()
@@ -121,7 +119,7 @@ class PlaywrightMailboxVerifier:
         # Find search box
         search_box = await self._find_search_box()
         if not search_box:
-            logger.warning("Could not find search box")
+            logger.warning("⚠️ Could not find search box")
             return search_results
 
         original_subject = failed_test.mail_subject
@@ -308,7 +306,7 @@ class PlaywrightMailboxVerifier:
         filename = f"email_verification_{email_hash}_{suffix}_{timestamp}.png"
         screenshot_path = self.screenshots_dir / filename
         await self.page.screenshot(path=str(screenshot_path), full_page=True)
-        logger.info(f"Screenshot saved: {filename}")
+        logger.info(f"📸 Screenshot saved: {filename}")
         return str(screenshot_path)
 
     async def _cleanup_browser(self):

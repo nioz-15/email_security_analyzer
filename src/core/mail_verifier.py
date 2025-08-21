@@ -35,6 +35,9 @@ class CompleteMailVerifier:
 
         self.complete_reports: List[CompleteTestReport] = []
 
+        # Clean up old files at startup
+        self._cleanup_old_files()
+
     async def run_complete_analysis(self) -> List[CompleteTestReport]:
         """Run complete analysis with enhanced reporting."""
 
@@ -107,7 +110,7 @@ class CompleteMailVerifier:
         if verification.mail_found:
             mail_type = failed_test.mail_type
 
-            logger.info("Intelligent Classification Logic:")
+            logger.info("🧠 Intelligent Classification Logic:")
             logger.info(f"   Mail Type: {mail_type}")
             logger.info(f"   Mail Found: {verification.mail_found}")
             logger.info(f"   Original Found: {verification.original_subject_found}")
@@ -124,7 +127,7 @@ class CompleteMailVerifier:
             # Override AI if it's clearly wrong
             if logic_classification != ai_analysis.classification:
                 logger.info(
-                    f"   OVERRIDING AI: Logic says {logic_classification}, AI says {ai_analysis.classification}"
+                    f"   🔄 OVERRIDING AI: Logic says {logic_classification}, AI says {ai_analysis.classification}"
                 )
                 if logic_classification in [ClassificationType.DELAY_ISSUE.value, ClassificationType.REAL_ISSUE.value]:
                     # Logic is confident about security classifications
@@ -165,8 +168,8 @@ class CompleteMailVerifier:
     async def _generate_final_report(self):
         """Generate the final HTML report."""
         html_path = await self.html_reporter.generate_professional_report(self.complete_reports)
-        logger.info(f"\nProfessional Dashboard Generated: {html_path}")
-        logger.info("Features:")
+        logger.info(f"\n🎉 Professional Dashboard Generated: {html_path}")
+        logger.info("📊 Features:")
         logger.info("   • Interactive stats and charts")
         logger.info("   • Integrated screenshots with click-to-expand")
         logger.info("   • AI analysis with confidence visualizations")
@@ -201,12 +204,9 @@ class CompleteMailVerifier:
                 'security_success_rate': 0.0
             }
 
-        real_issues = sum(
-            1 for r in self.complete_reports if r.final_classification == ClassificationType.REAL_ISSUE.value)
-        delay_issues = sum(
-            1 for r in self.complete_reports if r.final_classification == ClassificationType.DELAY_ISSUE.value)
-        code_issues = sum(
-            1 for r in self.complete_reports if r.final_classification == ClassificationType.CODE_ISSUE.value)
+        real_issues = sum(1 for r in self.complete_reports if r.final_classification == ClassificationType.REAL_ISSUE.value)
+        delay_issues = sum(1 for r in self.complete_reports if r.final_classification == ClassificationType.DELAY_ISSUE.value)
+        code_issues = sum(1 for r in self.complete_reports if r.final_classification == ClassificationType.CODE_ISSUE.value)
 
         total_security_tests = real_issues + delay_issues
         security_success_rate = (delay_issues / total_security_tests * 100) if total_security_tests > 0 else 100
@@ -218,3 +218,41 @@ class CompleteMailVerifier:
             'code_issues': code_issues,
             'security_success_rate': security_success_rate
         }
+
+    def _cleanup_old_files(self):
+        """Clean up old files at startup."""
+        logger.info("Cleaning up old files...")
+
+        try:
+            # Clean up old reports
+            reports_dir = settings.REPORTS_DIR
+            if reports_dir.exists():
+                for file in reports_dir.glob("ES_AI_Report-*.html"):
+                    file.unlink()
+                    logger.info(f"Removed old report: {file.name}")
+
+                # Clean up old screenshots in reports directory
+                screenshots_dir = reports_dir / "screenshots"
+                if screenshots_dir.exists():
+                    for file in screenshots_dir.glob("*.png"):
+                        file.unlink()
+                    logger.info(f"Cleaned up screenshots directory")
+
+            # Clean up screenshots in main screenshots directory
+            screenshots_dir = settings.SCREENSHOTS_DIR
+            if screenshots_dir.exists():
+                for file in screenshots_dir.glob("*.png"):
+                    file.unlink()
+                    logger.info(f"Removed old screenshot: {file.name}")
+
+            # Clean up old logs
+            logs_dir = settings.OUTPUT_DIR / "logs"
+            if logs_dir.exists():
+                for file in logs_dir.glob("*.log"):
+                    file.unlink()
+                    logger.info(f"Removed old log: {file.name}")
+
+            logger.info("Cleanup completed successfully")
+
+        except Exception as e:
+            logger.warning(f"Some files could not be cleaned up: {e}")
