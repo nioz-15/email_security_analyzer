@@ -16,8 +16,8 @@ from pathlib import Path
 
 # Required Settings
 REPORTS_FOLDER = "/Users/ahmadzidane/Downloads/allure-reports"
-MAILBOX_PASSWORD = "zT-cSj06xeHWDQj0I+}H"
-OPENAI_API_KEY = "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"
+MAILBOX_PASSWORD = ""
+OPENAI_API_KEY = ""
 
 # Optional Settings
 OUTPUT_DIRECTORY = "./output"  # Custom output directory (None for default)
