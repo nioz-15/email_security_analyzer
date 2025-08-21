@@ -1,0 +1,564 @@
+2025-08-21 16:43:05,452 - __main__ - INFO - Starting Email Security Analyzer
+2025-08-21 16:43:05,452 - __main__ - INFO - Reports folder: /Users/ahmadzidane/Downloads/allure-reports
+2025-08-21 16:43:05,452 - __main__ - INFO - Output directory: output
+2025-08-21 16:43:05,452 - __main__ - INFO - Log level: INFO
+2025-08-21 16:43:05,452 - __main__ - INFO - Browser headless: False
+2025-08-21 16:43:05,452 - __main__ - INFO - Browser timeout: 300s
+2025-08-21 16:43:05,494 - src.core.mail_verifier - INFO - Starting Complete Mail Verification Analysis
+2025-08-21 16:43:05,494 - src.core.mail_verifier - INFO - ======================================================================
+2025-08-21 16:43:05,494 - src.parsers.allure_parser - INFO - Parsing Allure reports for AssertionError failures
+2025-08-21 16:43:05,494 - src.parsers.allure_parser - INFO - Processing: mt-prod-3_c27_AUT-1723_1755499857.html
+2025-08-21 16:43:05,621 - src.parsers.allure_parser - INFO -    🔎 Checking 8 script sections for AssertionError
+2025-08-21 16:43:05,621 - src.parsers.allure_parser - INFO -    🎯 Analyzing Large Script 8 (length: 1,547,538 chars)
+2025-08-21 16:43:05,631 - src.parsers.allure_parser - INFO -    📦 Found 185 base64 sections - checking for AssertionError
+2025-08-21 16:43:05,631 - src.parsers.allure_parser - INFO -       🚨 Base64 section 10 contains AssertionError (real failure)
+2025-08-21 16:43:05,634 - src.parsers.allure_parser - INFO -       📍 Pattern 2 matched 3 AssertionError(s)
+2025-08-21 16:43:05,634 - src.parsers.allure_parser - INFO -       🎯 Found 3 total AssertionError(s) in this section
+2025-08-21 16:43:05,634 - src.parsers.allure_parser - INFO -       📧 Processing AssertionError 1 (via Pattern2):
+2025-08-21 16:43:05,634 - src.parsers.allure_parser - INFO -           Raw subject: AUTO_clean_mt-prod-3_27_180825_09_50_59_701179...
+2025-08-21 16:43:05,634 - src.parsers.allure_parser - INFO -           Raw email: automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,634 - src.parsers.allure_parser - INFO -       ✅ Cleaned subject: AUTO_clean_mt-prod-3_27_180825 → AUTO_clean_mt-prod-3_27_180825
+2025-08-21 16:43:05,635 - src.parsers.allure_parser - INFO -       ✅ Cleaned email: automation-inline@hecsmoketest2.onmicrosoft.com → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,635 - src.parsers.allure_parser - INFO -       📧 Processing valid AssertionError 1: AUTO_clean_mt-prod-3_27_180825_09_50_59_... → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,635 - src.parsers.allure_parser - INFO -    🏷️ Extracted specific test name: SmartAPI - Manual Actions: @1.1 - SmartAPI - Manual Quarantine & Restore
+2025-08-21 16:43:05,637 - src.parsers.allure_parser - INFO -    🏷️ Extracted test context: smartapi
+2025-08-21 16:43:05,637 - src.parsers.allure_parser - INFO -       🏷️ Detected mail type: CLEAN for subject: AUTO_clean_mt-prod-3_27_180825...
+2025-08-21 16:43:05,637 - src.parsers.allure_parser - INFO -       ✅ Processing unique email: clean - AUTO_clean_mt-prod-3_27_180825...
+2025-08-21 16:43:05,637 - src.parsers.allure_parser - INFO -          ✅ VALID ASSERTION ERROR: SmartAPI - Manual Actions: @1.1 - SmartAPI - Manual Quarantine & Restore - CLEAN: AUTO_clean_mt-prod-3_27_180825_09_50_59_...
+2025-08-21 16:43:05,637 - src.parsers.allure_parser - INFO -       📧 Processing AssertionError 2 (via Pattern2):
+2025-08-21 16:43:05,637 - src.parsers.allure_parser - INFO -           Raw subject: AUTO_clean_mt-prod-3_27_180825_09_50_59_701179...
+2025-08-21 16:43:05,637 - src.parsers.allure_parser - INFO -           Raw email: automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,637 - src.parsers.allure_parser - INFO -       ✅ Cleaned subject: AUTO_clean_mt-prod-3_27_180825 → AUTO_clean_mt-prod-3_27_180825
+2025-08-21 16:43:05,637 - src.parsers.allure_parser - INFO -       ✅ Cleaned email: automation-inline@hecsmoketest2.onmicrosoft.com → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,637 - src.parsers.allure_parser - INFO -       📧 Processing valid AssertionError 2: AUTO_clean_mt-prod-3_27_180825_09_50_59_... → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,637 - src.parsers.allure_parser - INFO -    🏷️ Extracted specific test name: SmartAPI - Manual Actions: @1.1 - SmartAPI - Manual Quarantine & Restore
+2025-08-21 16:43:05,638 - src.parsers.allure_parser - INFO -    🏷️ Extracted test context: smartapi
+2025-08-21 16:43:05,638 - src.parsers.allure_parser - INFO -       🏷️ Detected mail type: CLEAN for subject: AUTO_clean_mt-prod-3_27_180825...
+2025-08-21 16:43:05,638 - src.parsers.allure_parser - INFO -       🔄 Skipping duplicate email in same section: clean - AUTO_clean_mt-prod-3_27_180825...
+2025-08-21 16:43:05,638 - src.parsers.allure_parser - INFO -       📧 Processing AssertionError 3 (via Pattern2):
+2025-08-21 16:43:05,638 - src.parsers.allure_parser - INFO -           Raw subject: AUTO_clean_mt-prod-3_27_180825_09_50_59_701179...
+2025-08-21 16:43:05,638 - src.parsers.allure_parser - INFO -           Raw email: automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,638 - src.parsers.allure_parser - INFO -       ✅ Cleaned subject: AUTO_clean_mt-prod-3_27_180825 → AUTO_clean_mt-prod-3_27_180825
+2025-08-21 16:43:05,638 - src.parsers.allure_parser - INFO -       ✅ Cleaned email: automation-inline@hecsmoketest2.onmicrosoft.com → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,638 - src.parsers.allure_parser - INFO -       📧 Processing valid AssertionError 3: AUTO_clean_mt-prod-3_27_180825_09_50_59_... → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,638 - src.parsers.allure_parser - INFO -    🏷️ Extracted specific test name: SmartAPI - Manual Actions: @1.1 - SmartAPI - Manual Quarantine & Restore
+2025-08-21 16:43:05,639 - src.parsers.allure_parser - INFO -    🏷️ Extracted test context: smartapi
+2025-08-21 16:43:05,639 - src.parsers.allure_parser - INFO -       🏷️ Detected mail type: CLEAN for subject: AUTO_clean_mt-prod-3_27_180825...
+2025-08-21 16:43:05,640 - src.parsers.allure_parser - INFO -       🔄 Skipping duplicate email in same section: clean - AUTO_clean_mt-prod-3_27_180825...
+2025-08-21 16:43:05,640 - src.parsers.allure_parser - INFO -       🚨 Base64 section 39 contains AssertionError (real failure)
+2025-08-21 16:43:05,640 - src.parsers.allure_parser - INFO -       📍 Pattern 1 matched 3 AssertionError(s)
+2025-08-21 16:43:05,640 - src.parsers.allure_parser - INFO -       📍 Pattern 2 matched 1 AssertionError(s)
+2025-08-21 16:43:05,640 - src.parsers.allure_parser - INFO -       🎯 Found 4 total AssertionError(s) in this section
+2025-08-21 16:43:05,640 - src.parsers.allure_parser - INFO -       📧 Processing AssertionError 1 (via Pattern1):
+2025-08-21 16:43:05,640 - src.parsers.allure_parser - INFO -           Raw subject: AUTO_clean_mt-prod-3_27_180825_09_50_59_622509...
+2025-08-21 16:43:05,640 - src.parsers.allure_parser - INFO -           Raw email: automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,640 - src.parsers.allure_parser - INFO -       ✅ Cleaned subject: AUTO_clean_mt-prod-3_27_180825 → AUTO_clean_mt-prod-3_27_180825
+2025-08-21 16:43:05,640 - src.parsers.allure_parser - INFO -       ✅ Cleaned email: automation-inline@hecsmoketest2.onmicrosoft.com → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,640 - src.parsers.allure_parser - INFO -       📧 Processing valid AssertionError 1: AUTO_clean_mt-prod-3_27_180825_09_50_59_... → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,640 - src.parsers.allure_parser - INFO -    🏷️ Extracted specific test name: @1.1 - SmartAPI - Manual Quarantine & Restore
+2025-08-21 16:43:05,641 - src.parsers.allure_parser - INFO -    🏷️ Extracted test context: smartapi
+2025-08-21 16:43:05,641 - src.parsers.allure_parser - INFO -       🏷️ Detected mail type: CLEAN for subject: AUTO_clean_mt-prod-3_27_180825...
+2025-08-21 16:43:05,641 - src.parsers.allure_parser - INFO -       ✅ Processing unique email: clean - AUTO_clean_mt-prod-3_27_180825...
+2025-08-21 16:43:05,641 - src.parsers.allure_parser - INFO -          ✅ VALID ASSERTION ERROR: @1.1 - SmartAPI - Manual Quarantine & Restore - CLEAN: AUTO_clean_mt-prod-3_27_180825_09_50_59_...
+2025-08-21 16:43:05,641 - src.parsers.allure_parser - INFO -       📧 Processing AssertionError 2 (via Pattern1):
+2025-08-21 16:43:05,641 - src.parsers.allure_parser - INFO -           Raw subject: AUTO_phishing_dummy_mt-prod-3_27_180825_09_50_59_6...
+2025-08-21 16:43:05,641 - src.parsers.allure_parser - INFO -           Raw email: automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,641 - src.parsers.allure_parser - INFO -       ✅ Cleaned subject: AUTO_phishing_dummy_mt-prod-3_ → AUTO_phishing_dummy_mt-prod-3_
+2025-08-21 16:43:05,641 - src.parsers.allure_parser - INFO -       ✅ Cleaned email: automation-inline@hecsmoketest2.onmicrosoft.com → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,641 - src.parsers.allure_parser - INFO -       📧 Processing valid AssertionError 2: AUTO_phishing_dummy_mt-prod-3_27_180825_... → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,641 - src.parsers.allure_parser - INFO -    🏷️ Extracted specific test name: @1.1 - SmartAPI - Manual Quarantine & Restore
+2025-08-21 16:43:05,641 - src.parsers.allure_parser - INFO -    🏷️ Extracted test context: smartapi
+2025-08-21 16:43:05,641 - src.parsers.allure_parser - INFO -       🏷️ Detected mail type: PHISHING for subject: AUTO_phishing_dummy_mt-prod-3_...
+2025-08-21 16:43:05,641 - src.parsers.allure_parser - INFO -       ✅ Processing unique email: phishing - AUTO_phishing_dummy_mt-prod-3_...
+2025-08-21 16:43:05,641 - src.parsers.allure_parser - INFO -          ✅ VALID ASSERTION ERROR: @1.1 - SmartAPI - Manual Quarantine & Restore - PHISHING: AUTO_phishing_dummy_mt-prod-3_27_180825_...
+2025-08-21 16:43:05,642 - src.parsers.allure_parser - INFO -       📧 Processing AssertionError 3 (via Pattern1):
+2025-08-21 16:43:05,642 - src.parsers.allure_parser - INFO -           Raw subject: AUTO_malware_dummy_mt-prod-3_27_180825_09_50_59_72...
+2025-08-21 16:43:05,642 - src.parsers.allure_parser - INFO -           Raw email: automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,642 - src.parsers.allure_parser - INFO -       ✅ Cleaned subject: AUTO_malware_dummy_mt-prod-3_2 → AUTO_malware_dummy_mt-prod-3_2
+2025-08-21 16:43:05,642 - src.parsers.allure_parser - INFO -       ✅ Cleaned email: automation-inline@hecsmoketest2.onmicrosoft.com → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,642 - src.parsers.allure_parser - INFO -       📧 Processing valid AssertionError 3: AUTO_malware_dummy_mt-prod-3_27_180825_0... → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,642 - src.parsers.allure_parser - INFO -    🏷️ Extracted specific test name: @1.1 - SmartAPI - Manual Quarantine & Restore
+2025-08-21 16:43:05,642 - src.parsers.allure_parser - INFO -    🏷️ Extracted test context: smartapi
+2025-08-21 16:43:05,642 - src.parsers.allure_parser - INFO -       🏷️ Detected mail type: MALWARE for subject: AUTO_malware_dummy_mt-prod-3_2...
+2025-08-21 16:43:05,642 - src.parsers.allure_parser - INFO -       ✅ Processing unique email: malware - AUTO_malware_dummy_mt-prod-3_2...
+2025-08-21 16:43:05,642 - src.parsers.allure_parser - INFO -          ✅ VALID ASSERTION ERROR: @1.1 - SmartAPI - Manual Quarantine & Restore - MALWARE: AUTO_malware_dummy_mt-prod-3_27_180825_0...
+2025-08-21 16:43:05,642 - src.parsers.allure_parser - INFO -       📧 Processing AssertionError 4 (via Pattern2):
+2025-08-21 16:43:05,642 - src.parsers.allure_parser - INFO -           Raw subject: AUTO_clean_mt-prod-3_27_180825_09_50_59_701179...
+2025-08-21 16:43:05,642 - src.parsers.allure_parser - INFO -           Raw email: automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,642 - src.parsers.allure_parser - INFO -       ✅ Cleaned subject: AUTO_clean_mt-prod-3_27_180825 → AUTO_clean_mt-prod-3_27_180825
+2025-08-21 16:43:05,642 - src.parsers.allure_parser - INFO -       ✅ Cleaned email: automation-inline@hecsmoketest2.onmicrosoft.com → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,642 - src.parsers.allure_parser - INFO -       📧 Processing valid AssertionError 4: AUTO_clean_mt-prod-3_27_180825_09_50_59_... → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,643 - src.parsers.allure_parser - INFO -    🏷️ Extracted specific test name: @1.1 - SmartAPI - Manual Quarantine & Restore
+2025-08-21 16:43:05,643 - src.parsers.allure_parser - INFO -    🏷️ Extracted test context: smartapi
+2025-08-21 16:43:05,643 - src.parsers.allure_parser - INFO -       🏷️ Detected mail type: CLEAN for subject: AUTO_clean_mt-prod-3_27_180825...
+2025-08-21 16:43:05,643 - src.parsers.allure_parser - INFO -       ✅ Processing unique email: clean - AUTO_clean_mt-prod-3_27_180825...
+2025-08-21 16:43:05,643 - src.parsers.allure_parser - INFO -          ✅ VALID ASSERTION ERROR: @1.1 - SmartAPI - Manual Quarantine & Restore - CLEAN: AUTO_clean_mt-prod-3_27_180825_09_50_59_...
+2025-08-21 16:43:05,643 - src.parsers.allure_parser - INFO -       🚨 Base64 section 47 contains AssertionError (real failure)
+2025-08-21 16:43:05,644 - src.parsers.allure_parser - INFO -       📍 Pattern 1 matched 3 AssertionError(s)
+2025-08-21 16:43:05,644 - src.parsers.allure_parser - INFO -       🎯 Found 3 total AssertionError(s) in this section
+2025-08-21 16:43:05,644 - src.parsers.allure_parser - INFO -       📧 Processing AssertionError 1 (via Pattern1):
+2025-08-21 16:43:05,644 - src.parsers.allure_parser - INFO -           Raw subject: AUTO_malware_dummy_mt-prod-3_27_180825_09_50_59_72...
+2025-08-21 16:43:05,644 - src.parsers.allure_parser - INFO -           Raw email: automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,644 - src.parsers.allure_parser - INFO -       ✅ Cleaned subject: AUTO_malware_dummy_mt-prod-3_2 → AUTO_malware_dummy_mt-prod-3_2
+2025-08-21 16:43:05,644 - src.parsers.allure_parser - INFO -       ✅ Cleaned email: automation-inline@hecsmoketest2.onmicrosoft.com → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,644 - src.parsers.allure_parser - INFO -       📧 Processing valid AssertionError 1: AUTO_malware_dummy_mt-prod-3_27_180825_0... → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,644 - src.parsers.allure_parser - INFO -    🏷️ Extracted specific test name: Smoke-Emails: @1.3 - Email Malware inline - SMTP
+2025-08-21 16:43:05,645 - src.parsers.allure_parser - INFO -    🏷️ Extracted test context: smoke
+2025-08-21 16:43:05,645 - src.parsers.allure_parser - INFO -       🏷️ Detected mail type: MALWARE for subject: AUTO_malware_dummy_mt-prod-3_2...
+2025-08-21 16:43:05,645 - src.parsers.allure_parser - INFO -       ✅ Processing unique email: malware - AUTO_malware_dummy_mt-prod-3_2...
+2025-08-21 16:43:05,645 - src.parsers.allure_parser - INFO -          ✅ VALID ASSERTION ERROR: Smoke-Emails: @1.3 - Email Malware inline - SMTP - MALWARE: AUTO_malware_dummy_mt-prod-3_27_180825_0...
+2025-08-21 16:43:05,645 - src.parsers.allure_parser - INFO -       📧 Processing AssertionError 2 (via Pattern1):
+2025-08-21 16:43:05,645 - src.parsers.allure_parser - INFO -           Raw subject: AUTO_malware_dummy_mt-prod-3_27_180825_09_50_59_72...
+2025-08-21 16:43:05,645 - src.parsers.allure_parser - INFO -           Raw email: automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,646 - src.parsers.allure_parser - INFO -       ✅ Cleaned subject: AUTO_malware_dummy_mt-prod-3_2 → AUTO_malware_dummy_mt-prod-3_2
+2025-08-21 16:43:05,646 - src.parsers.allure_parser - INFO -       ✅ Cleaned email: automation-inline@hecsmoketest2.onmicrosoft.com → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,646 - src.parsers.allure_parser - INFO -       📧 Processing valid AssertionError 2: AUTO_malware_dummy_mt-prod-3_27_180825_0... → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,646 - src.parsers.allure_parser - INFO -    🏷️ Extracted specific test name: Smoke-Emails: @1.3 - Email Malware inline - SMTP
+2025-08-21 16:43:05,647 - src.parsers.allure_parser - INFO -    🏷️ Extracted test context: smoke
+2025-08-21 16:43:05,647 - src.parsers.allure_parser - INFO -       🏷️ Detected mail type: MALWARE for subject: AUTO_malware_dummy_mt-prod-3_2...
+2025-08-21 16:43:05,647 - src.parsers.allure_parser - INFO -       🔄 Skipping duplicate email in same section: malware - AUTO_malware_dummy_mt-prod-3_2...
+2025-08-21 16:43:05,647 - src.parsers.allure_parser - INFO -       📧 Processing AssertionError 3 (via Pattern1):
+2025-08-21 16:43:05,647 - src.parsers.allure_parser - INFO -           Raw subject: AUTO_malware_dummy_mt-prod-3_27_180825_09_50_59_72...
+2025-08-21 16:43:05,647 - src.parsers.allure_parser - INFO -           Raw email: automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,647 - src.parsers.allure_parser - INFO -       ✅ Cleaned subject: AUTO_malware_dummy_mt-prod-3_2 → AUTO_malware_dummy_mt-prod-3_2
+2025-08-21 16:43:05,647 - src.parsers.allure_parser - INFO -       ✅ Cleaned email: automation-inline@hecsmoketest2.onmicrosoft.com → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,647 - src.parsers.allure_parser - INFO -       📧 Processing valid AssertionError 3: AUTO_malware_dummy_mt-prod-3_27_180825_0... → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,647 - src.parsers.allure_parser - INFO -    🏷️ Extracted specific test name: Smoke-Emails: @1.3 - Email Malware inline - SMTP
+2025-08-21 16:43:05,648 - src.parsers.allure_parser - INFO -    🏷️ Extracted test context: smoke
+2025-08-21 16:43:05,648 - src.parsers.allure_parser - INFO -       🏷️ Detected mail type: MALWARE for subject: AUTO_malware_dummy_mt-prod-3_2...
+2025-08-21 16:43:05,648 - src.parsers.allure_parser - INFO -       🔄 Skipping duplicate email in same section: malware - AUTO_malware_dummy_mt-prod-3_2...
+2025-08-21 16:43:05,648 - src.parsers.allure_parser - INFO -       📊 Processed 50/185 base64 sections... Found 3 AssertionErrors
+2025-08-21 16:43:05,651 - src.parsers.allure_parser - INFO -       🚨 Base64 section 99 contains AssertionError (real failure)
+2025-08-21 16:43:05,651 - src.parsers.allure_parser - INFO -       📍 Pattern 1 matched 3 AssertionError(s)
+2025-08-21 16:43:05,652 - src.parsers.allure_parser - INFO -       🎯 Found 3 total AssertionError(s) in this section
+2025-08-21 16:43:05,652 - src.parsers.allure_parser - INFO -       📧 Processing AssertionError 1 (via Pattern1):
+2025-08-21 16:43:05,652 - src.parsers.allure_parser - INFO -           Raw subject: AUTO_phishing_dummy_mt-prod-3_27_180825_09_50_59_6...
+2025-08-21 16:43:05,652 - src.parsers.allure_parser - INFO -           Raw email: automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,652 - src.parsers.allure_parser - INFO -       ✅ Cleaned subject: AUTO_phishing_dummy_mt-prod-3_ → AUTO_phishing_dummy_mt-prod-3_
+2025-08-21 16:43:05,652 - src.parsers.allure_parser - INFO -       ✅ Cleaned email: automation-inline@hecsmoketest2.onmicrosoft.com → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,652 - src.parsers.allure_parser - INFO -       📧 Processing valid AssertionError 1: AUTO_phishing_dummy_mt-prod-3_27_180825_... → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,652 - src.parsers.allure_parser - INFO -    🏷️ Extracted specific test name: Smoke-Emails: @1.2 - Email Phishing inline - SMTP
+2025-08-21 16:43:05,653 - src.parsers.allure_parser - INFO -    🏷️ Extracted test context: smoke
+2025-08-21 16:43:05,653 - src.parsers.allure_parser - INFO -       🏷️ Detected mail type: PHISHING for subject: AUTO_phishing_dummy_mt-prod-3_...
+2025-08-21 16:43:05,653 - src.parsers.allure_parser - INFO -       ✅ Processing unique email: phishing - AUTO_phishing_dummy_mt-prod-3_...
+2025-08-21 16:43:05,653 - src.parsers.allure_parser - INFO -          ✅ VALID ASSERTION ERROR: Smoke-Emails: @1.2 - Email Phishing inline - SMTP - PHISHING: AUTO_phishing_dummy_mt-prod-3_27_180825_...
+2025-08-21 16:43:05,653 - src.parsers.allure_parser - INFO -       📧 Processing AssertionError 2 (via Pattern1):
+2025-08-21 16:43:05,653 - src.parsers.allure_parser - INFO -           Raw subject: AUTO_phishing_dummy_mt-prod-3_27_180825_09_50_59_6...
+2025-08-21 16:43:05,653 - src.parsers.allure_parser - INFO -           Raw email: automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,653 - src.parsers.allure_parser - INFO -       ✅ Cleaned subject: AUTO_phishing_dummy_mt-prod-3_ → AUTO_phishing_dummy_mt-prod-3_
+2025-08-21 16:43:05,653 - src.parsers.allure_parser - INFO -       ✅ Cleaned email: automation-inline@hecsmoketest2.onmicrosoft.com → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,653 - src.parsers.allure_parser - INFO -       📧 Processing valid AssertionError 2: AUTO_phishing_dummy_mt-prod-3_27_180825_... → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,653 - src.parsers.allure_parser - INFO -    🏷️ Extracted specific test name: Smoke-Emails: @1.2 - Email Phishing inline - SMTP
+2025-08-21 16:43:05,654 - src.parsers.allure_parser - INFO -    🏷️ Extracted test context: smoke
+2025-08-21 16:43:05,654 - src.parsers.allure_parser - INFO -       🏷️ Detected mail type: PHISHING for subject: AUTO_phishing_dummy_mt-prod-3_...
+2025-08-21 16:43:05,654 - src.parsers.allure_parser - INFO -       🔄 Skipping duplicate email in same section: phishing - AUTO_phishing_dummy_mt-prod-3_...
+2025-08-21 16:43:05,654 - src.parsers.allure_parser - INFO -       📧 Processing AssertionError 3 (via Pattern1):
+2025-08-21 16:43:05,654 - src.parsers.allure_parser - INFO -           Raw subject: AUTO_phishing_dummy_mt-prod-3_27_180825_09_50_59_6...
+2025-08-21 16:43:05,654 - src.parsers.allure_parser - INFO -           Raw email: automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,654 - src.parsers.allure_parser - INFO -       ✅ Cleaned subject: AUTO_phishing_dummy_mt-prod-3_ → AUTO_phishing_dummy_mt-prod-3_
+2025-08-21 16:43:05,654 - src.parsers.allure_parser - INFO -       ✅ Cleaned email: automation-inline@hecsmoketest2.onmicrosoft.com → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,654 - src.parsers.allure_parser - INFO -       📧 Processing valid AssertionError 3: AUTO_phishing_dummy_mt-prod-3_27_180825_... → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,655 - src.parsers.allure_parser - INFO -    🏷️ Extracted specific test name: Smoke-Emails: @1.2 - Email Phishing inline - SMTP
+2025-08-21 16:43:05,655 - src.parsers.allure_parser - INFO -    🏷️ Extracted test context: smoke
+2025-08-21 16:43:05,656 - src.parsers.allure_parser - INFO -       🏷️ Detected mail type: PHISHING for subject: AUTO_phishing_dummy_mt-prod-3_...
+2025-08-21 16:43:05,656 - src.parsers.allure_parser - INFO -       🔄 Skipping duplicate email in same section: phishing - AUTO_phishing_dummy_mt-prod-3_...
+2025-08-21 16:43:05,656 - src.parsers.allure_parser - INFO -       📊 Processed 100/185 base64 sections... Found 4 AssertionErrors
+2025-08-21 16:43:05,658 - src.parsers.allure_parser - INFO -       🚨 Base64 section 136 contains AssertionError (real failure)
+2025-08-21 16:43:05,658 - src.parsers.allure_parser - INFO -       📍 Pattern 1 matched 3 AssertionError(s)
+2025-08-21 16:43:05,658 - src.parsers.allure_parser - INFO -       📍 Pattern 2 matched 1 AssertionError(s)
+2025-08-21 16:43:05,658 - src.parsers.allure_parser - INFO -       🎯 Found 4 total AssertionError(s) in this section
+2025-08-21 16:43:05,658 - src.parsers.allure_parser - INFO -       📧 Processing AssertionError 1 (via Pattern1):
+2025-08-21 16:43:05,658 - src.parsers.allure_parser - INFO -           Raw subject: AUTO_phishing_dummy_mt-prod-3_27_180825_09_50_59_6...
+2025-08-21 16:43:05,658 - src.parsers.allure_parser - INFO -           Raw email: automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,658 - src.parsers.allure_parser - INFO -       ✅ Cleaned subject: AUTO_phishing_dummy_mt-prod-3_ → AUTO_phishing_dummy_mt-prod-3_
+2025-08-21 16:43:05,658 - src.parsers.allure_parser - INFO -       ✅ Cleaned email: automation-inline@hecsmoketest2.onmicrosoft.com → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,658 - src.parsers.allure_parser - INFO -       📧 Processing valid AssertionError 1: AUTO_phishing_dummy_mt-prod-3_27_180825_... → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,658 - src.parsers.allure_parser - INFO -    🏷️ Using fallback test name: Email Phishing inline - SMTP
+2025-08-21 16:43:05,658 - src.parsers.allure_parser - INFO -       🏷️ Detected mail type: PHISHING for subject: AUTO_phishing_dummy_mt-prod-3_...
+2025-08-21 16:43:05,658 - src.parsers.allure_parser - INFO -       ✅ Processing unique email: phishing - AUTO_phishing_dummy_mt-prod-3_...
+2025-08-21 16:43:05,659 - src.parsers.allure_parser - INFO -          ✅ VALID ASSERTION ERROR: Email Phishing inline - SMTP - PHISHING: AUTO_phishing_dummy_mt-prod-3_27_180825_...
+2025-08-21 16:43:05,659 - src.parsers.allure_parser - INFO -       📧 Processing AssertionError 2 (via Pattern1):
+2025-08-21 16:43:05,659 - src.parsers.allure_parser - INFO -           Raw subject: AUTO_malware_dummy_mt-prod-3_27_180825_09_50_59_72...
+2025-08-21 16:43:05,659 - src.parsers.allure_parser - INFO -           Raw email: automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,659 - src.parsers.allure_parser - INFO -       ✅ Cleaned subject: AUTO_malware_dummy_mt-prod-3_2 → AUTO_malware_dummy_mt-prod-3_2
+2025-08-21 16:43:05,659 - src.parsers.allure_parser - INFO -       ✅ Cleaned email: automation-inline@hecsmoketest2.onmicrosoft.com → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,659 - src.parsers.allure_parser - INFO -       📧 Processing valid AssertionError 2: AUTO_malware_dummy_mt-prod-3_27_180825_0... → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,659 - src.parsers.allure_parser - INFO -    🏷️ Using fallback test name: Email Malware inline - SMTP
+2025-08-21 16:43:05,659 - src.parsers.allure_parser - INFO -       🏷️ Detected mail type: MALWARE for subject: AUTO_malware_dummy_mt-prod-3_2...
+2025-08-21 16:43:05,659 - src.parsers.allure_parser - INFO -       ✅ Processing unique email: malware - AUTO_malware_dummy_mt-prod-3_2...
+2025-08-21 16:43:05,659 - src.parsers.allure_parser - INFO -          ✅ VALID ASSERTION ERROR: Email Malware inline - SMTP - MALWARE: AUTO_malware_dummy_mt-prod-3_27_180825_0...
+2025-08-21 16:43:05,659 - src.parsers.allure_parser - INFO -       📧 Processing AssertionError 3 (via Pattern1):
+2025-08-21 16:43:05,659 - src.parsers.allure_parser - INFO -           Raw subject: AUTO_clean_mt-prod-3_27_180825_09_50_59_622509...
+2025-08-21 16:43:05,659 - src.parsers.allure_parser - INFO -           Raw email: automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,659 - src.parsers.allure_parser - INFO -       ✅ Cleaned subject: AUTO_clean_mt-prod-3_27_180825 → AUTO_clean_mt-prod-3_27_180825
+2025-08-21 16:43:05,659 - src.parsers.allure_parser - INFO -       ✅ Cleaned email: automation-inline@hecsmoketest2.onmicrosoft.com → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,659 - src.parsers.allure_parser - INFO -       📧 Processing valid AssertionError 3: AUTO_clean_mt-prod-3_27_180825_09_50_59_... → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,659 - src.parsers.allure_parser - INFO -    🏷️ Using fallback test name: Email Clean inline - SMTP
+2025-08-21 16:43:05,659 - src.parsers.allure_parser - INFO -       🏷️ Detected mail type: CLEAN for subject: AUTO_clean_mt-prod-3_27_180825...
+2025-08-21 16:43:05,659 - src.parsers.allure_parser - INFO -       ✅ Processing unique email: clean - AUTO_clean_mt-prod-3_27_180825...
+2025-08-21 16:43:05,659 - src.parsers.allure_parser - INFO -          ✅ VALID ASSERTION ERROR: Email Clean inline - SMTP - CLEAN: AUTO_clean_mt-prod-3_27_180825_09_50_59_...
+2025-08-21 16:43:05,659 - src.parsers.allure_parser - INFO -       📧 Processing AssertionError 4 (via Pattern2):
+2025-08-21 16:43:05,659 - src.parsers.allure_parser - INFO -           Raw subject: AUTO_clean_mt-prod-3_27_180825_09_50_59_701179...
+2025-08-21 16:43:05,660 - src.parsers.allure_parser - INFO -           Raw email: automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,660 - src.parsers.allure_parser - INFO -       ✅ Cleaned subject: AUTO_clean_mt-prod-3_27_180825 → AUTO_clean_mt-prod-3_27_180825
+2025-08-21 16:43:05,660 - src.parsers.allure_parser - INFO -       ✅ Cleaned email: automation-inline@hecsmoketest2.onmicrosoft.com → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,660 - src.parsers.allure_parser - INFO -       📧 Processing valid AssertionError 4: AUTO_clean_mt-prod-3_27_180825_09_50_59_... → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,660 - src.parsers.allure_parser - INFO -    🏷️ Using fallback test name: Email Clean inline - SMTP
+2025-08-21 16:43:05,660 - src.parsers.allure_parser - INFO -       🏷️ Detected mail type: CLEAN for subject: AUTO_clean_mt-prod-3_27_180825...
+2025-08-21 16:43:05,660 - src.parsers.allure_parser - INFO -       ✅ Processing unique email: clean - AUTO_clean_mt-prod-3_27_180825...
+2025-08-21 16:43:05,660 - src.parsers.allure_parser - INFO -          ✅ VALID ASSERTION ERROR: Email Clean inline - SMTP - CLEAN: AUTO_clean_mt-prod-3_27_180825_09_50_59_...
+2025-08-21 16:43:05,660 - src.parsers.allure_parser - INFO -       📊 Processed 150/185 base64 sections... Found 5 AssertionErrors
+2025-08-21 16:43:05,660 - src.parsers.allure_parser - INFO -       🚨 Base64 section 162 contains AssertionError (real failure)
+2025-08-21 16:43:05,661 - src.parsers.allure_parser - INFO -       📍 Pattern 1 matched 3 AssertionError(s)
+2025-08-21 16:43:05,661 - src.parsers.allure_parser - INFO -       🎯 Found 3 total AssertionError(s) in this section
+2025-08-21 16:43:05,661 - src.parsers.allure_parser - INFO -       📧 Processing AssertionError 1 (via Pattern1):
+2025-08-21 16:43:05,661 - src.parsers.allure_parser - INFO -           Raw subject: AUTO_clean_mt-prod-3_27_180825_09_50_59_622509...
+2025-08-21 16:43:05,661 - src.parsers.allure_parser - INFO -           Raw email: automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,661 - src.parsers.allure_parser - INFO -       ✅ Cleaned subject: AUTO_clean_mt-prod-3_27_180825 → AUTO_clean_mt-prod-3_27_180825
+2025-08-21 16:43:05,661 - src.parsers.allure_parser - INFO -       ✅ Cleaned email: automation-inline@hecsmoketest2.onmicrosoft.com → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,662 - src.parsers.allure_parser - INFO -       📧 Processing valid AssertionError 1: AUTO_clean_mt-prod-3_27_180825_09_50_59_... → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,662 - src.parsers.allure_parser - INFO -    🏷️ Extracted specific test name: Smoke-Emails: @1.1 - Email Clean inline - SMTP
+2025-08-21 16:43:05,663 - src.parsers.allure_parser - INFO -    🏷️ Extracted test context: smoke
+2025-08-21 16:43:05,663 - src.parsers.allure_parser - INFO -       🏷️ Detected mail type: CLEAN for subject: AUTO_clean_mt-prod-3_27_180825...
+2025-08-21 16:43:05,663 - src.parsers.allure_parser - INFO -       ✅ Processing unique email: clean - AUTO_clean_mt-prod-3_27_180825...
+2025-08-21 16:43:05,663 - src.parsers.allure_parser - INFO -          ✅ VALID ASSERTION ERROR: Smoke-Emails: @1.1 - Email Clean inline - SMTP - CLEAN: AUTO_clean_mt-prod-3_27_180825_09_50_59_...
+2025-08-21 16:43:05,663 - src.parsers.allure_parser - INFO -       📧 Processing AssertionError 2 (via Pattern1):
+2025-08-21 16:43:05,663 - src.parsers.allure_parser - INFO -           Raw subject: AUTO_clean_mt-prod-3_27_180825_09_50_59_622509...
+2025-08-21 16:43:05,663 - src.parsers.allure_parser - INFO -           Raw email: automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,663 - src.parsers.allure_parser - INFO -       ✅ Cleaned subject: AUTO_clean_mt-prod-3_27_180825 → AUTO_clean_mt-prod-3_27_180825
+2025-08-21 16:43:05,663 - src.parsers.allure_parser - INFO -       ✅ Cleaned email: automation-inline@hecsmoketest2.onmicrosoft.com → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,663 - src.parsers.allure_parser - INFO -       📧 Processing valid AssertionError 2: AUTO_clean_mt-prod-3_27_180825_09_50_59_... → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,663 - src.parsers.allure_parser - INFO -    🏷️ Extracted specific test name: Smoke-Emails: @1.1 - Email Clean inline - SMTP
+2025-08-21 16:43:05,664 - src.parsers.allure_parser - INFO -    🏷️ Extracted test context: smoke
+2025-08-21 16:43:05,664 - src.parsers.allure_parser - INFO -       🏷️ Detected mail type: CLEAN for subject: AUTO_clean_mt-prod-3_27_180825...
+2025-08-21 16:43:05,664 - src.parsers.allure_parser - INFO -       🔄 Skipping duplicate email in same section: clean - AUTO_clean_mt-prod-3_27_180825...
+2025-08-21 16:43:05,664 - src.parsers.allure_parser - INFO -       📧 Processing AssertionError 3 (via Pattern1):
+2025-08-21 16:43:05,664 - src.parsers.allure_parser - INFO -           Raw subject: AUTO_clean_mt-prod-3_27_180825_09_50_59_622509...
+2025-08-21 16:43:05,664 - src.parsers.allure_parser - INFO -           Raw email: automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,664 - src.parsers.allure_parser - INFO -       ✅ Cleaned subject: AUTO_clean_mt-prod-3_27_180825 → AUTO_clean_mt-prod-3_27_180825
+2025-08-21 16:43:05,664 - src.parsers.allure_parser - INFO -       ✅ Cleaned email: automation-inline@hecsmoketest2.onmicrosoft.com → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,664 - src.parsers.allure_parser - INFO -       📧 Processing valid AssertionError 3: AUTO_clean_mt-prod-3_27_180825_09_50_59_... → automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,664 - src.parsers.allure_parser - INFO -    🏷️ Extracted specific test name: Smoke-Emails: @1.1 - Email Clean inline - SMTP
+2025-08-21 16:43:05,665 - src.parsers.allure_parser - INFO -    🏷️ Extracted test context: smoke
+2025-08-21 16:43:05,665 - src.parsers.allure_parser - INFO -       🏷️ Detected mail type: CLEAN for subject: AUTO_clean_mt-prod-3_27_180825...
+2025-08-21 16:43:05,665 - src.parsers.allure_parser - INFO -       🔄 Skipping duplicate email in same section: clean - AUTO_clean_mt-prod-3_27_180825...
+2025-08-21 16:43:05,665 - src.parsers.allure_parser - INFO -    🎯 Found 6 base64 sections with AssertionError
+2025-08-21 16:43:05,666 - src.parsers.allure_parser - INFO -    Extracted 12 tests from mt-prod-3_c27_AUT-1723_1755499857.html
+2025-08-21 16:43:05,666 - src.parsers.allure_parser - INFO - Starting deduplication with 12 tests
+2025-08-21 16:43:05,666 - src.parsers.allure_parser - INFO - Processing test 1: clean - AUTO_clean_mt-prod-3_27_180825...
+2025-08-21 16:43:05,666 - src.parsers.allure_parser - INFO - Email key: AUTO_clean_mt-prod-3_27_180825_09_50_59_701179_automation-inline@hecsmoketest2.onmicrosoft.com_clean...
+2025-08-21 16:43:05,666 - src.parsers.allure_parser - INFO -    UNIQUE EMAIL: CLEAN - AUTO_clean_mt-prod-3_27_180825_09_50_59_701179...
+2025-08-21 16:43:05,666 - src.parsers.allure_parser - INFO -        Email Key: AUTO_clean_mt-prod-3_27_180825_09_50_59_701179_automation-inline@hecsmoketest2.onmicrosoft.com_clean...
+2025-08-21 16:43:05,666 - src.parsers.allure_parser - INFO -        Test Context: SmartAPI - Manual Actions: @1.1 - SmartAPI - Manual Quarantine & Restore
+2025-08-21 16:43:05,666 - src.parsers.allure_parser - INFO - Processing test 2: clean - AUTO_clean_mt-prod-3_27_180825...
+2025-08-21 16:43:05,666 - src.parsers.allure_parser - INFO - Email key: AUTO_clean_mt-prod-3_27_180825_09_50_59_622509_automation-inline@hecsmoketest2.onmicrosoft.com_clean...
+2025-08-21 16:43:05,666 - src.parsers.allure_parser - INFO -    UNIQUE EMAIL: CLEAN - AUTO_clean_mt-prod-3_27_180825_09_50_59_622509...
+2025-08-21 16:43:05,666 - src.parsers.allure_parser - INFO -        Email Key: AUTO_clean_mt-prod-3_27_180825_09_50_59_622509_automation-inline@hecsmoketest2.onmicrosoft.com_clean...
+2025-08-21 16:43:05,666 - src.parsers.allure_parser - INFO -        Test Context: @1.1 - SmartAPI - Manual Quarantine & Restore
+2025-08-21 16:43:05,666 - src.parsers.allure_parser - INFO - Processing test 3: phishing - AUTO_phishing_dummy_mt-prod-3_...
+2025-08-21 16:43:05,666 - src.parsers.allure_parser - INFO - Email key: AUTO_phishing_dummy_mt-prod-3_27_180825_09_50_59_626280_automation-inline@hecsmoketest2.onmicrosoft....
+2025-08-21 16:43:05,666 - src.parsers.allure_parser - INFO -    UNIQUE EMAIL: PHISHING - AUTO_phishing_dummy_mt-prod-3_27_180825_09_50_59_6...
+2025-08-21 16:43:05,666 - src.parsers.allure_parser - INFO -        Email Key: AUTO_phishing_dummy_mt-prod-3_27_180825_09_50_59_626280_automation-inline@hecsmoketest2.onmicrosoft....
+2025-08-21 16:43:05,666 - src.parsers.allure_parser - INFO -        Test Context: @1.1 - SmartAPI - Manual Quarantine & Restore
+2025-08-21 16:43:05,666 - src.parsers.allure_parser - INFO - Processing test 4: malware - AUTO_malware_dummy_mt-prod-3_2...
+2025-08-21 16:43:05,666 - src.parsers.allure_parser - INFO - Email key: AUTO_malware_dummy_mt-prod-3_27_180825_09_50_59_722737_automation-inline@hecsmoketest2.onmicrosoft.c...
+2025-08-21 16:43:05,666 - src.parsers.allure_parser - INFO -    UNIQUE EMAIL: MALWARE - AUTO_malware_dummy_mt-prod-3_27_180825_09_50_59_72...
+2025-08-21 16:43:05,666 - src.parsers.allure_parser - INFO -        Email Key: AUTO_malware_dummy_mt-prod-3_27_180825_09_50_59_722737_automation-inline@hecsmoketest2.onmicrosoft.c...
+2025-08-21 16:43:05,666 - src.parsers.allure_parser - INFO -        Test Context: @1.1 - SmartAPI - Manual Quarantine & Restore
+2025-08-21 16:43:05,666 - src.parsers.allure_parser - INFO - Processing test 5: clean - AUTO_clean_mt-prod-3_27_180825...
+2025-08-21 16:43:05,666 - src.parsers.allure_parser - INFO - Email key: AUTO_clean_mt-prod-3_27_180825_09_50_59_701179_automation-inline@hecsmoketest2.onmicrosoft.com_clean...
+2025-08-21 16:43:05,666 - src.parsers.allure_parser - INFO -    DUPLICATE EMAIL SKIPPED: CLEAN - AUTO_clean_mt-prod-3_27_180825...
+2025-08-21 16:43:05,666 - src.parsers.allure_parser - INFO -        Duplicate Key: AUTO_clean_mt-prod-3_27_180825_09_50_59_701179_automation-inline@hecsmoketest2.onmicrosoft.com_clean...
+2025-08-21 16:43:05,666 - src.parsers.allure_parser - INFO -        Skipped Context: @1.1 - SmartAPI - Manual Quarantine & Restore
+2025-08-21 16:43:05,666 - src.parsers.allure_parser - INFO - Processing test 6: malware - AUTO_malware_dummy_mt-prod-3_2...
+2025-08-21 16:43:05,666 - src.parsers.allure_parser - INFO - Email key: AUTO_malware_dummy_mt-prod-3_27_180825_09_50_59_722737_automation-inline@hecsmoketest2.onmicrosoft.c...
+2025-08-21 16:43:05,666 - src.parsers.allure_parser - INFO -    DUPLICATE EMAIL SKIPPED: MALWARE - AUTO_malware_dummy_mt-prod-3_2...
+2025-08-21 16:43:05,667 - src.parsers.allure_parser - INFO -        Duplicate Key: AUTO_malware_dummy_mt-prod-3_27_180825_09_50_59_722737_automation-inline@hecsmoketest2.onmicrosoft.c...
+2025-08-21 16:43:05,667 - src.parsers.allure_parser - INFO -        Skipped Context: Smoke-Emails: @1.3 - Email Malware inline - SMTP
+2025-08-21 16:43:05,667 - src.parsers.allure_parser - INFO - Processing test 7: phishing - AUTO_phishing_dummy_mt-prod-3_...
+2025-08-21 16:43:05,667 - src.parsers.allure_parser - INFO - Email key: AUTO_phishing_dummy_mt-prod-3_27_180825_09_50_59_626280_automation-inline@hecsmoketest2.onmicrosoft....
+2025-08-21 16:43:05,667 - src.parsers.allure_parser - INFO -    DUPLICATE EMAIL SKIPPED: PHISHING - AUTO_phishing_dummy_mt-prod-3_...
+2025-08-21 16:43:05,667 - src.parsers.allure_parser - INFO -        Duplicate Key: AUTO_phishing_dummy_mt-prod-3_27_180825_09_50_59_626280_automation-inline@hecsmoketest2.onmicrosoft....
+2025-08-21 16:43:05,667 - src.parsers.allure_parser - INFO -        Skipped Context: Smoke-Emails: @1.2 - Email Phishing inline - SMTP
+2025-08-21 16:43:05,667 - src.parsers.allure_parser - INFO - Processing test 8: phishing - AUTO_phishing_dummy_mt-prod-3_...
+2025-08-21 16:43:05,667 - src.parsers.allure_parser - INFO - Email key: AUTO_phishing_dummy_mt-prod-3_27_180825_09_50_59_626280_automation-inline@hecsmoketest2.onmicrosoft....
+2025-08-21 16:43:05,667 - src.parsers.allure_parser - INFO -    DUPLICATE EMAIL SKIPPED: PHISHING - AUTO_phishing_dummy_mt-prod-3_...
+2025-08-21 16:43:05,669 - src.parsers.allure_parser - INFO -        Duplicate Key: AUTO_phishing_dummy_mt-prod-3_27_180825_09_50_59_626280_automation-inline@hecsmoketest2.onmicrosoft....
+2025-08-21 16:43:05,669 - src.parsers.allure_parser - INFO -        Skipped Context: Email Phishing inline - SMTP
+2025-08-21 16:43:05,669 - src.parsers.allure_parser - INFO - Processing test 9: malware - AUTO_malware_dummy_mt-prod-3_2...
+2025-08-21 16:43:05,669 - src.parsers.allure_parser - INFO - Email key: AUTO_malware_dummy_mt-prod-3_27_180825_09_50_59_722737_automation-inline@hecsmoketest2.onmicrosoft.c...
+2025-08-21 16:43:05,669 - src.parsers.allure_parser - INFO -    DUPLICATE EMAIL SKIPPED: MALWARE - AUTO_malware_dummy_mt-prod-3_2...
+2025-08-21 16:43:05,669 - src.parsers.allure_parser - INFO -        Duplicate Key: AUTO_malware_dummy_mt-prod-3_27_180825_09_50_59_722737_automation-inline@hecsmoketest2.onmicrosoft.c...
+2025-08-21 16:43:05,669 - src.parsers.allure_parser - INFO -        Skipped Context: Email Malware inline - SMTP
+2025-08-21 16:43:05,669 - src.parsers.allure_parser - INFO - Processing test 10: clean - AUTO_clean_mt-prod-3_27_180825...
+2025-08-21 16:43:05,669 - src.parsers.allure_parser - INFO - Email key: AUTO_clean_mt-prod-3_27_180825_09_50_59_622509_automation-inline@hecsmoketest2.onmicrosoft.com_clean...
+2025-08-21 16:43:05,669 - src.parsers.allure_parser - INFO -    DUPLICATE EMAIL SKIPPED: CLEAN - AUTO_clean_mt-prod-3_27_180825...
+2025-08-21 16:43:05,669 - src.parsers.allure_parser - INFO -        Duplicate Key: AUTO_clean_mt-prod-3_27_180825_09_50_59_622509_automation-inline@hecsmoketest2.onmicrosoft.com_clean...
+2025-08-21 16:43:05,669 - src.parsers.allure_parser - INFO -        Skipped Context: Email Clean inline - SMTP
+2025-08-21 16:43:05,669 - src.parsers.allure_parser - INFO - Processing test 11: clean - AUTO_clean_mt-prod-3_27_180825...
+2025-08-21 16:43:05,669 - src.parsers.allure_parser - INFO - Email key: AUTO_clean_mt-prod-3_27_180825_09_50_59_701179_automation-inline@hecsmoketest2.onmicrosoft.com_clean...
+2025-08-21 16:43:05,669 - src.parsers.allure_parser - INFO -    DUPLICATE EMAIL SKIPPED: CLEAN - AUTO_clean_mt-prod-3_27_180825...
+2025-08-21 16:43:05,669 - src.parsers.allure_parser - INFO -        Duplicate Key: AUTO_clean_mt-prod-3_27_180825_09_50_59_701179_automation-inline@hecsmoketest2.onmicrosoft.com_clean...
+2025-08-21 16:43:05,669 - src.parsers.allure_parser - INFO -        Skipped Context: Email Clean inline - SMTP
+2025-08-21 16:43:05,669 - src.parsers.allure_parser - INFO - Processing test 12: clean - AUTO_clean_mt-prod-3_27_180825...
+2025-08-21 16:43:05,669 - src.parsers.allure_parser - INFO - Email key: AUTO_clean_mt-prod-3_27_180825_09_50_59_622509_automation-inline@hecsmoketest2.onmicrosoft.com_clean...
+2025-08-21 16:43:05,669 - src.parsers.allure_parser - INFO -    DUPLICATE EMAIL SKIPPED: CLEAN - AUTO_clean_mt-prod-3_27_180825...
+2025-08-21 16:43:05,669 - src.parsers.allure_parser - INFO -        Duplicate Key: AUTO_clean_mt-prod-3_27_180825_09_50_59_622509_automation-inline@hecsmoketest2.onmicrosoft.com_clean...
+2025-08-21 16:43:05,669 - src.parsers.allure_parser - INFO -        Skipped Context: Smoke-Emails: @1.1 - Email Clean inline - SMTP
+2025-08-21 16:43:05,669 - src.parsers.allure_parser - INFO - Deduplication complete: 4 unique tests
+2025-08-21 16:43:05,669 - src.parsers.allure_parser - INFO -    After deduplication: 4 unique tests
+2025-08-21 16:43:05,669 - src.parsers.allure_parser - INFO - Total unique emails found: 4
+2025-08-21 16:43:05,669 - src.parsers.allure_parser - INFO - UNIQUE EMAILS TO PROCESS:
+2025-08-21 16:43:05,670 - src.parsers.allure_parser - INFO -    1. CLEAN: AUTO_clean_mt-prod-3_27_180825_09_50_59_701179
+2025-08-21 16:43:05,670 - src.parsers.allure_parser - INFO -       Email: automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,670 - src.parsers.allure_parser - INFO -       Test Context: SmartAPI - Manual Actions: @1.1 - SmartAPI - Manual Quarantine & Restore
+2025-08-21 16:43:05,670 - src.parsers.allure_parser - INFO -    2. CLEAN: AUTO_clean_mt-prod-3_27_180825_09_50_59_622509
+2025-08-21 16:43:05,670 - src.parsers.allure_parser - INFO -       Email: automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,670 - src.parsers.allure_parser - INFO -       Test Context: @1.1 - SmartAPI - Manual Quarantine & Restore
+2025-08-21 16:43:05,670 - src.parsers.allure_parser - INFO -    3. PHISHING: AUTO_phishing_dummy_mt-prod-3_27_180825_09_50_59_626280
+2025-08-21 16:43:05,670 - src.parsers.allure_parser - INFO -       Email: automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,670 - src.parsers.allure_parser - INFO -       Test Context: @1.1 - SmartAPI - Manual Quarantine & Restore
+2025-08-21 16:43:05,670 - src.parsers.allure_parser - INFO -    4. MALWARE: AUTO_malware_dummy_mt-prod-3_27_180825_09_50_59_722737
+2025-08-21 16:43:05,670 - src.parsers.allure_parser - INFO -       Email: automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,670 - src.parsers.allure_parser - INFO -       Test Context: @1.1 - SmartAPI - Manual Quarantine & Restore
+2025-08-21 16:43:05,670 - src.core.mail_verifier - INFO - Found 4 unique email failures
+2025-08-21 16:43:05,670 - src.core.mail_verifier - INFO -    1. CLEAN: AUTO_clean_mt-prod-3_27_180825_09_50_59_701179...
+2025-08-21 16:43:05,670 - src.core.mail_verifier - INFO -       Expected: Email should be delivered normally without any security modifications
+2025-08-21 16:43:05,670 - src.core.mail_verifier - INFO -    2. CLEAN: AUTO_clean_mt-prod-3_27_180825_09_50_59_622509...
+2025-08-21 16:43:05,670 - src.core.mail_verifier - INFO -       Expected: Email should be delivered normally without any security modifications
+2025-08-21 16:43:05,670 - src.core.mail_verifier - INFO -    3. PHISHING: AUTO_phishing_dummy_mt-prod-3_27_180825_09_50_59_6...
+2025-08-21 16:43:05,670 - src.core.mail_verifier - INFO -       Expected: Email should arrive with "Phishing Alert!" prefix added to subject
+2025-08-21 16:43:05,670 - src.core.mail_verifier - INFO -    4. MALWARE: AUTO_malware_dummy_mt-prod-3_27_180825_09_50_59_72...
+2025-08-21 16:43:05,670 - src.core.mail_verifier - INFO -       Expected: Email should be quarantined with "Quarantined" prefix added to subject
+2025-08-21 16:43:05,670 - src.core.mail_verifier - INFO - 
+Processing Email Failure 1/4: SmartAPI - Manual Actions: @1.1 - SmartAPI - Manual Quarantine & Restore
+2025-08-21 16:43:05,670 - src.verifiers.mailbox_verifier - INFO - Verifying mail for: automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:05,670 - src.verifiers.mailbox_verifier - INFO - Searching for ORIGINAL subject: AUTO_clean_mt-prod-3_27_180825_09_50_59_701179...
+2025-08-21 16:43:05,670 - src.verifiers.mailbox_verifier - INFO - Expected behavior: Email should be delivered normally without any security modifications
+2025-08-21 16:43:20,753 - src.verifiers.mailbox_verifier - INFO - Screenshot saved: email_verification_16c013cb_01_initial_inbox_20250821_164320.png
+2025-08-21 16:43:20,779 - src.verifiers.mailbox_verifier - INFO - 🔍 Searching for ORIGINAL subject: AUTO_clean_mt-prod-3_27_180825_09_50_59_701179
+2025-08-21 16:43:25,386 - src.verifiers.mailbox_verifier - INFO -    ✅ Search result: AUTO_clean_mt-prod-3_27_180825_09_50_59_...
+2025-08-21 16:43:25,472 - src.verifiers.mailbox_verifier - INFO - Screenshot saved: email_verification_16c013cb_02_search_results_20250821_164325.png
+2025-08-21 16:43:25,545 - src.verifiers.mailbox_verifier - INFO - Screenshot saved: email_verification_16c013cb_03_email_details_20250821_164325.png
+2025-08-21 16:43:25,961 - src.analyzers.ai_analyzer - INFO - Running AI analysis for: SmartAPI - Manual Actions: @1.1 - SmartAPI - Manual Quarantine & Restore
+2025-08-21 16:43:31,837 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-21 16:43:31,871 - src.analyzers.ai_analyzer - INFO - Sending prompt to OpenAI...
+2025-08-21 16:43:51,904 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-21 16:43:51,907 - src.analyzers.ai_analyzer - INFO - Raw AI Response:
+2025-08-21 16:43:51,907 - src.analyzers.ai_analyzer - INFO - ==================================================
+2025-08-21 16:43:51,907 - src.analyzers.ai_analyzer - INFO - Classification: DELAY_ISSUE  
+Confidence: 95%  
+Explanation: The email was delivered normally without any security modifications, indicating it was correctly identified as a clean email. The delay in delivery suggests a timing issue rather than a security failure. Both the email being found and the correct security action being applied confirm that the security system functioned as expected, albeit slowly.  
+Recommended Action: Investigate the cause of the delay in email delivery to improve system efficiency and ensure timely delivery in the future.
+2025-08-21 16:43:51,907 - src.analyzers.ai_analyzer - INFO - ==================================================
+2025-08-21 16:43:51,907 - src.analyzers.ai_analyzer - INFO - Parsing AI response...
+2025-08-21 16:43:51,908 - src.analyzers.ai_analyzer - INFO - Found classification in line: Classification: DELAY_ISSUE → DELAY_ISSUE
+2025-08-21 16:43:51,908 - src.analyzers.ai_analyzer - INFO - Found confidence in line: Confidence: 95% → 95.0
+2025-08-21 16:43:51,908 - src.analyzers.ai_analyzer - INFO - Found explanation in line: Explanation: The email was delivered normally with...
+2025-08-21 16:43:51,908 - src.analyzers.ai_analyzer - INFO - Final parsed result: DELAY_ISSUE (95.0%)
+2025-08-21 16:43:51,908 - src.analyzers.ai_analyzer - INFO - Parsed Classification: DELAY_ISSUE
+2025-08-21 16:43:51,908 - src.analyzers.ai_analyzer - INFO - Parsed Confidence: 95.0
+2025-08-21 16:43:51,908 - src.analyzers.ai_analyzer - INFO - Parsed Explanation: The email was delivered normally without any security modifications, indicating it was correctly ide...
+2025-08-21 16:43:51,908 - src.core.mail_verifier - INFO - Intelligent Classification Logic:
+2025-08-21 16:43:51,908 - src.core.mail_verifier - INFO -    Mail Type: clean
+2025-08-21 16:43:51,908 - src.core.mail_verifier - INFO -    Mail Found: True
+2025-08-21 16:43:51,908 - src.core.mail_verifier - INFO -    Original Found: True
+2025-08-21 16:43:51,908 - src.core.mail_verifier - INFO -    Quarantined Found: False
+2025-08-21 16:43:51,908 - src.core.mail_verifier - INFO -    Phishing Alert Found: False
+2025-08-21 16:43:51,908 - src.core.mail_verifier - INFO -    Action Applied Correctly: True
+2025-08-21 16:43:51,908 - src.core.mail_verifier - INFO -    Logic-based classification: DELAY_ISSUE
+2025-08-21 16:43:51,909 - src.core.mail_verifier - INFO -    AI classification: DELAY_ISSUE
+2025-08-21 16:43:51,909 - src.core.mail_verifier - INFO - Test 1 Analysis:
+2025-08-21 16:43:51,909 - src.core.mail_verifier - INFO -    Found: True
+2025-08-21 16:43:51,909 - src.core.mail_verifier - INFO -    Original: True
+2025-08-21 16:43:51,909 - src.core.mail_verifier - INFO -    Quarantined: False
+2025-08-21 16:43:51,909 - src.core.mail_verifier - INFO -    Phishing Alert: False
+2025-08-21 16:43:51,909 - src.core.mail_verifier - INFO -    Correct Action: True
+2025-08-21 16:43:51,909 - src.core.mail_verifier - INFO -    Final: DELAY_ISSUE
+2025-08-21 16:43:51,909 - src.core.mail_verifier - INFO -    AI: DELAY_ISSUE (95.0%)
+2025-08-21 16:43:51,909 - src.core.mail_verifier - INFO - 
+Processing Email Failure 2/4: @1.1 - SmartAPI - Manual Quarantine & Restore
+2025-08-21 16:43:51,909 - src.verifiers.mailbox_verifier - INFO - Verifying mail for: automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:43:51,909 - src.verifiers.mailbox_verifier - INFO - Searching for ORIGINAL subject: AUTO_clean_mt-prod-3_27_180825_09_50_59_622509...
+2025-08-21 16:43:51,909 - src.verifiers.mailbox_verifier - INFO - Expected behavior: Email should be delivered normally without any security modifications
+2025-08-21 16:44:05,134 - src.verifiers.mailbox_verifier - INFO - Screenshot saved: email_verification_93483f98_01_initial_inbox_20250821_164404.png
+2025-08-21 16:44:05,167 - src.verifiers.mailbox_verifier - INFO - 🔍 Searching for ORIGINAL subject: AUTO_clean_mt-prod-3_27_180825_09_50_59_622509
+2025-08-21 16:44:09,755 - src.verifiers.mailbox_verifier - INFO -    ✅ Search result: AUTO_clean_mt-prod-3_27_180825_09_50_59_...
+2025-08-21 16:44:09,827 - src.verifiers.mailbox_verifier - INFO - Screenshot saved: email_verification_93483f98_02_search_results_20250821_164409.png
+2025-08-21 16:44:09,896 - src.verifiers.mailbox_verifier - INFO - Screenshot saved: email_verification_93483f98_03_email_details_20250821_164409.png
+2025-08-21 16:44:10,638 - src.analyzers.ai_analyzer - INFO - Running AI analysis for: @1.1 - SmartAPI - Manual Quarantine & Restore
+2025-08-21 16:44:22,105 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-21 16:44:22,108 - src.analyzers.ai_analyzer - INFO - Sending prompt to OpenAI...
+2025-08-21 16:44:24,880 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-21 16:44:24,884 - src.analyzers.ai_analyzer - INFO - Raw AI Response:
+2025-08-21 16:44:24,884 - src.analyzers.ai_analyzer - INFO - ==================================================
+2025-08-21 16:44:24,884 - src.analyzers.ai_analyzer - INFO - Classification: DELAY_ISSUE  
+Confidence: 100%  
+Explanation: The email was found in the mailbox with the original subject intact, indicating it was correctly identified as a clean email. The correct security action was applied, as the email was delivered normally without any modifications. The only issue was the delay in delivery, which aligns with the definition of a DELAY_ISSUE where the security system worked correctly but was slow.  
+Recommended Action: Investigate the cause of the delay in email delivery to improve system performance and ensure timely delivery of emails in the future.
+2025-08-21 16:44:24,884 - src.analyzers.ai_analyzer - INFO - ==================================================
+2025-08-21 16:44:24,884 - src.analyzers.ai_analyzer - INFO - Parsing AI response...
+2025-08-21 16:44:24,884 - src.analyzers.ai_analyzer - INFO - Found classification in line: Classification: DELAY_ISSUE → DELAY_ISSUE
+2025-08-21 16:44:24,885 - src.analyzers.ai_analyzer - INFO - Found confidence in line: Confidence: 100% → 100.0
+2025-08-21 16:44:24,885 - src.analyzers.ai_analyzer - INFO - Found explanation in line: Explanation: The email was found in the mailbox wi...
+2025-08-21 16:44:24,885 - src.analyzers.ai_analyzer - INFO - Final parsed result: DELAY_ISSUE (100.0%)
+2025-08-21 16:44:24,885 - src.analyzers.ai_analyzer - INFO - Parsed Classification: DELAY_ISSUE
+2025-08-21 16:44:24,885 - src.analyzers.ai_analyzer - INFO - Parsed Confidence: 100.0
+2025-08-21 16:44:24,885 - src.analyzers.ai_analyzer - INFO - Parsed Explanation: The email was found in the mailbox with the original subject intact, indicating it was correctly ide...
+2025-08-21 16:44:24,885 - src.core.mail_verifier - INFO - Intelligent Classification Logic:
+2025-08-21 16:44:24,885 - src.core.mail_verifier - INFO -    Mail Type: clean
+2025-08-21 16:44:24,885 - src.core.mail_verifier - INFO -    Mail Found: True
+2025-08-21 16:44:24,885 - src.core.mail_verifier - INFO -    Original Found: True
+2025-08-21 16:44:24,886 - src.core.mail_verifier - INFO -    Quarantined Found: False
+2025-08-21 16:44:24,886 - src.core.mail_verifier - INFO -    Phishing Alert Found: False
+2025-08-21 16:44:24,886 - src.core.mail_verifier - INFO -    Action Applied Correctly: True
+2025-08-21 16:44:24,886 - src.core.mail_verifier - INFO -    Logic-based classification: DELAY_ISSUE
+2025-08-21 16:44:24,886 - src.core.mail_verifier - INFO -    AI classification: DELAY_ISSUE
+2025-08-21 16:44:24,886 - src.core.mail_verifier - INFO - Test 2 Analysis:
+2025-08-21 16:44:24,886 - src.core.mail_verifier - INFO -    Found: True
+2025-08-21 16:44:24,886 - src.core.mail_verifier - INFO -    Original: True
+2025-08-21 16:44:24,886 - src.core.mail_verifier - INFO -    Quarantined: False
+2025-08-21 16:44:24,886 - src.core.mail_verifier - INFO -    Phishing Alert: False
+2025-08-21 16:44:24,886 - src.core.mail_verifier - INFO -    Correct Action: True
+2025-08-21 16:44:24,886 - src.core.mail_verifier - INFO -    Final: DELAY_ISSUE
+2025-08-21 16:44:24,887 - src.core.mail_verifier - INFO -    AI: DELAY_ISSUE (100.0%)
+2025-08-21 16:44:24,887 - src.core.mail_verifier - INFO - 
+Processing Email Failure 3/4: @1.1 - SmartAPI - Manual Quarantine & Restore
+2025-08-21 16:44:24,887 - src.verifiers.mailbox_verifier - INFO - Verifying mail for: automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:44:24,887 - src.verifiers.mailbox_verifier - INFO - Searching for ORIGINAL subject: AUTO_phishing_dummy_mt-prod-3_27_180825_09_50_59_6...
+2025-08-21 16:44:24,887 - src.verifiers.mailbox_verifier - INFO - Expected behavior: Email should arrive with "Phishing Alert!" prefix added to subject
+2025-08-21 16:44:40,959 - src.verifiers.mailbox_verifier - INFO - Screenshot saved: email_verification_6f96a168_01_initial_inbox_20250821_164440.png
+2025-08-21 16:44:40,971 - src.verifiers.mailbox_verifier - INFO - 🔍 Searching for ORIGINAL subject: AUTO_phishing_dummy_mt-prod-3_27_180825_09_50_59_626280
+2025-08-21 16:44:45,563 - src.verifiers.mailbox_verifier - INFO -    ✅ Search result: AUTO_phishing_dummy_mt-prod-3_27_180825_...
+2025-08-21 16:44:45,563 - src.verifiers.mailbox_verifier - INFO - 🔍 Searching for PHISHING ALERT version: Phishing Alert! [AUTO_phishing_dummy_mt-prod-3_27_180825_09_50_59_626280]
+2025-08-21 16:44:50,111 - src.verifiers.mailbox_verifier - INFO -    ✅ Search result: Phishing Alert! [AUTO_phishing_dummy_mt-...
+2025-08-21 16:44:50,179 - src.verifiers.mailbox_verifier - INFO - Screenshot saved: email_verification_6f96a168_02_search_results_20250821_164450.png
+2025-08-21 16:44:50,245 - src.verifiers.mailbox_verifier - INFO - Screenshot saved: email_verification_6f96a168_03_email_details_20250821_164450.png
+2025-08-21 16:44:50,894 - src.analyzers.ai_analyzer - INFO - Running AI analysis for: @1.1 - SmartAPI - Manual Quarantine & Restore
+2025-08-21 16:44:58,297 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-21 16:44:58,302 - src.analyzers.ai_analyzer - INFO - Sending prompt to OpenAI...
+2025-08-21 16:45:01,051 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-21 16:45:01,065 - src.analyzers.ai_analyzer - INFO - Raw AI Response:
+2025-08-21 16:45:01,065 - src.analyzers.ai_analyzer - INFO - ==================================================
+2025-08-21 16:45:01,065 - src.analyzers.ai_analyzer - INFO - Classification: DELAY_ISSUE  
+Confidence: 95%  
+Explanation: The email was found in the mailbox with the correct "Phishing Alert!" prefix, indicating that the security system applied the correct action. The delay in delivery does not affect the security outcome, as the phishing alert was correctly applied. This aligns with the definition of a DELAY_ISSUE, where the security system worked correctly but was slow in delivery.  
+Recommended Action: Investigate the cause of the delivery delay to improve system performance and ensure timely email processing. Consider optimizing email processing workflows or reviewing server performance to prevent future delays.
+2025-08-21 16:45:01,065 - src.analyzers.ai_analyzer - INFO - ==================================================
+2025-08-21 16:45:01,065 - src.analyzers.ai_analyzer - INFO - Parsing AI response...
+2025-08-21 16:45:01,065 - src.analyzers.ai_analyzer - INFO - Found classification in line: Classification: DELAY_ISSUE → DELAY_ISSUE
+2025-08-21 16:45:01,065 - src.analyzers.ai_analyzer - INFO - Found confidence in line: Confidence: 95% → 95.0
+2025-08-21 16:45:01,065 - src.analyzers.ai_analyzer - INFO - Found explanation in line: Explanation: The email was found in the mailbox wi...
+2025-08-21 16:45:01,065 - src.analyzers.ai_analyzer - INFO - Final parsed result: DELAY_ISSUE (95.0%)
+2025-08-21 16:45:01,065 - src.analyzers.ai_analyzer - INFO - Parsed Classification: DELAY_ISSUE
+2025-08-21 16:45:01,065 - src.analyzers.ai_analyzer - INFO - Parsed Confidence: 95.0
+2025-08-21 16:45:01,066 - src.analyzers.ai_analyzer - INFO - Parsed Explanation: The email was found in the mailbox with the correct "Phishing Alert!" prefix, indicating that the se...
+2025-08-21 16:45:01,066 - src.core.mail_verifier - INFO - Intelligent Classification Logic:
+2025-08-21 16:45:01,066 - src.core.mail_verifier - INFO -    Mail Type: phishing
+2025-08-21 16:45:01,066 - src.core.mail_verifier - INFO -    Mail Found: True
+2025-08-21 16:45:01,066 - src.core.mail_verifier - INFO -    Original Found: True
+2025-08-21 16:45:01,066 - src.core.mail_verifier - INFO -    Quarantined Found: False
+2025-08-21 16:45:01,066 - src.core.mail_verifier - INFO -    Phishing Alert Found: True
+2025-08-21 16:45:01,066 - src.core.mail_verifier - INFO -    Action Applied Correctly: True
+2025-08-21 16:45:01,066 - src.core.mail_verifier - INFO -    Logic-based classification: DELAY_ISSUE
+2025-08-21 16:45:01,066 - src.core.mail_verifier - INFO -    AI classification: DELAY_ISSUE
+2025-08-21 16:45:01,066 - src.core.mail_verifier - INFO - Test 3 Analysis:
+2025-08-21 16:45:01,066 - src.core.mail_verifier - INFO -    Found: True
+2025-08-21 16:45:01,066 - src.core.mail_verifier - INFO -    Original: True
+2025-08-21 16:45:01,066 - src.core.mail_verifier - INFO -    Quarantined: False
+2025-08-21 16:45:01,066 - src.core.mail_verifier - INFO -    Phishing Alert: True
+2025-08-21 16:45:01,066 - src.core.mail_verifier - INFO -    Correct Action: True
+2025-08-21 16:45:01,066 - src.core.mail_verifier - INFO -    Final: DELAY_ISSUE
+2025-08-21 16:45:01,066 - src.core.mail_verifier - INFO -    AI: DELAY_ISSUE (95.0%)
+2025-08-21 16:45:01,066 - src.core.mail_verifier - INFO - 
+Processing Email Failure 4/4: @1.1 - SmartAPI - Manual Quarantine & Restore
+2025-08-21 16:45:01,067 - src.verifiers.mailbox_verifier - INFO - Verifying mail for: automation-inline@hecsmoketest2.onmicrosoft.com
+2025-08-21 16:45:01,067 - src.verifiers.mailbox_verifier - INFO - Searching for ORIGINAL subject: AUTO_malware_dummy_mt-prod-3_27_180825_09_50_59_72...
+2025-08-21 16:45:01,067 - src.verifiers.mailbox_verifier - INFO - Expected behavior: Email should be quarantined with "Quarantined" prefix added to subject
+2025-08-21 16:45:13,787 - src.verifiers.mailbox_verifier - INFO - Screenshot saved: email_verification_2d844024_01_initial_inbox_20250821_164513.png
+2025-08-21 16:45:13,849 - src.verifiers.mailbox_verifier - INFO - 🔍 Searching for ORIGINAL subject: AUTO_malware_dummy_mt-prod-3_27_180825_09_50_59_722737
+2025-08-21 16:45:18,425 - src.verifiers.mailbox_verifier - INFO -    ✅ Search result: AUTO_malware_dummy_mt-prod-3_27_180825_0...
+2025-08-21 16:45:18,426 - src.verifiers.mailbox_verifier - INFO - 🔍 Searching for QUARANTINED version: Quarantined [AUTO_malware_dummy_mt-prod-3_27_180825_09_50_59_722737]
+2025-08-21 16:45:22,976 - src.verifiers.mailbox_verifier - INFO -    ✅ Search result: Quarantined [AUTO_malware_dummy_mt-prod-...
+2025-08-21 16:45:23,071 - src.verifiers.mailbox_verifier - INFO - Screenshot saved: email_verification_2d844024_02_search_results_20250821_164522.png
+2025-08-21 16:45:23,146 - src.verifiers.mailbox_verifier - INFO - Screenshot saved: email_verification_2d844024_03_email_details_20250821_164523.png
+2025-08-21 16:45:23,660 - src.analyzers.ai_analyzer - INFO - Running AI analysis for: @1.1 - SmartAPI - Manual Quarantine & Restore
+2025-08-21 16:46:00,615 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-21 16:46:00,621 - src.analyzers.ai_analyzer - INFO - Sending prompt to OpenAI...
+2025-08-21 16:46:03,392 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-21 16:46:03,395 - src.analyzers.ai_analyzer - INFO - Raw AI Response:
+2025-08-21 16:46:03,395 - src.analyzers.ai_analyzer - INFO - ==================================================
+2025-08-21 16:46:03,396 - src.analyzers.ai_analyzer - INFO - Classification: DELAY_ISSUE  
+Confidence: 100%  
+Explanation: The email was correctly identified as malware and was quarantined, as indicated by the "Quarantined" prefix in the subject line. The security system applied the correct action, but the delivery was delayed. Since both the email was found and the correct security action was applied, this aligns with the definition of a DELAY_ISSUE, where the security system worked correctly but experienced slow delivery.  
+Recommended Action: Investigate the cause of the delay in email processing to improve delivery times, ensuring that future emails are handled more promptly.
+2025-08-21 16:46:03,396 - src.analyzers.ai_analyzer - INFO - ==================================================
+2025-08-21 16:46:03,396 - src.analyzers.ai_analyzer - INFO - Parsing AI response...
+2025-08-21 16:46:03,396 - src.analyzers.ai_analyzer - INFO - Found classification in line: Classification: DELAY_ISSUE → DELAY_ISSUE
+2025-08-21 16:46:03,396 - src.analyzers.ai_analyzer - INFO - Found confidence in line: Confidence: 100% → 100.0
+2025-08-21 16:46:03,396 - src.analyzers.ai_analyzer - INFO - Found explanation in line: Explanation: The email was correctly identified as...
+2025-08-21 16:46:03,396 - src.analyzers.ai_analyzer - INFO - Final parsed result: DELAY_ISSUE (100.0%)
+2025-08-21 16:46:03,397 - src.analyzers.ai_analyzer - INFO - Parsed Classification: DELAY_ISSUE
+2025-08-21 16:46:03,397 - src.analyzers.ai_analyzer - INFO - Parsed Confidence: 100.0
+2025-08-21 16:46:03,397 - src.analyzers.ai_analyzer - INFO - Parsed Explanation: The email was correctly identified as malware and was quarantined, as indicated by the "Quarantined"...
+2025-08-21 16:46:03,397 - src.core.mail_verifier - INFO - Intelligent Classification Logic:
+2025-08-21 16:46:03,397 - src.core.mail_verifier - INFO -    Mail Type: malware
+2025-08-21 16:46:03,397 - src.core.mail_verifier - INFO -    Mail Found: True
+2025-08-21 16:46:03,397 - src.core.mail_verifier - INFO -    Original Found: True
+2025-08-21 16:46:03,397 - src.core.mail_verifier - INFO -    Quarantined Found: True
+2025-08-21 16:46:03,397 - src.core.mail_verifier - INFO -    Phishing Alert Found: False
+2025-08-21 16:46:03,397 - src.core.mail_verifier - INFO -    Action Applied Correctly: True
+2025-08-21 16:46:03,397 - src.core.mail_verifier - INFO -    Logic-based classification: DELAY_ISSUE
+2025-08-21 16:46:03,398 - src.core.mail_verifier - INFO -    AI classification: DELAY_ISSUE
+2025-08-21 16:46:03,398 - src.core.mail_verifier - INFO - Test 4 Analysis:
+2025-08-21 16:46:03,398 - src.core.mail_verifier - INFO -    Found: True
+2025-08-21 16:46:03,398 - src.core.mail_verifier - INFO -    Original: True
+2025-08-21 16:46:03,398 - src.core.mail_verifier - INFO -    Quarantined: True
+2025-08-21 16:46:03,398 - src.core.mail_verifier - INFO -    Phishing Alert: False
+2025-08-21 16:46:03,398 - src.core.mail_verifier - INFO -    Correct Action: True
+2025-08-21 16:46:03,398 - src.core.mail_verifier - INFO -    Final: DELAY_ISSUE
+2025-08-21 16:46:03,399 - src.core.mail_verifier - INFO -    AI: DELAY_ISSUE (100.0%)
+2025-08-21 16:46:03,399 - src.reporters.html_reporter - INFO - Setting up screenshots directory: output/reports/screenshots
+2025-08-21 16:46:03,399 - src.reporters.html_reporter - INFO - Processing screenshot for email 1: AUTO_clean_mt-prod-3_27_180825...
+2025-08-21 16:46:03,399 - src.reporters.html_reporter - INFO -    Original path: output/screenshots/email_verification_16c013cb_03_email_details_20250821_164325.png
+2025-08-21 16:46:03,399 - src.reporters.html_reporter - INFO -    File exists: True
+2025-08-21 16:46:03,411 - src.reporters.html_reporter - INFO -    Copied to: output/reports/screenshots/email_1_clean_20250821_164603.png
+2025-08-21 16:46:03,412 - src.reporters.html_reporter - INFO -    Copy successful: True
+2025-08-21 16:46:03,412 - src.reporters.html_reporter - INFO -    HTML relative path: screenshots/email_1_clean_20250821_164603.png
+2025-08-21 16:46:03,412 - src.reporters.html_reporter - INFO - Processing screenshot for email 2: AUTO_clean_mt-prod-3_27_180825...
+2025-08-21 16:46:03,412 - src.reporters.html_reporter - INFO -    Original path: output/screenshots/email_verification_93483f98_03_email_details_20250821_164409.png
+2025-08-21 16:46:03,412 - src.reporters.html_reporter - INFO -    File exists: True
+2025-08-21 16:46:03,417 - src.reporters.html_reporter - INFO -    Copied to: output/reports/screenshots/email_2_clean_20250821_164603.png
+2025-08-21 16:46:03,417 - src.reporters.html_reporter - INFO -    Copy successful: True
+2025-08-21 16:46:03,417 - src.reporters.html_reporter - INFO -    HTML relative path: screenshots/email_2_clean_20250821_164603.png
+2025-08-21 16:46:03,417 - src.reporters.html_reporter - INFO - Processing screenshot for email 3: AUTO_phishing_dummy_mt-prod-3_...
+2025-08-21 16:46:03,417 - src.reporters.html_reporter - INFO -    Original path: output/screenshots/email_verification_6f96a168_03_email_details_20250821_164450.png
+2025-08-21 16:46:03,417 - src.reporters.html_reporter - INFO -    File exists: True
+2025-08-21 16:46:03,423 - src.reporters.html_reporter - INFO -    Copied to: output/reports/screenshots/email_3_phishing_20250821_164603.png
+2025-08-21 16:46:03,423 - src.reporters.html_reporter - INFO -    Copy successful: True
+2025-08-21 16:46:03,423 - src.reporters.html_reporter - INFO -    HTML relative path: screenshots/email_3_phishing_20250821_164603.png
+2025-08-21 16:46:03,423 - src.reporters.html_reporter - INFO - Processing screenshot for email 4: AUTO_malware_dummy_mt-prod-3_2...
+2025-08-21 16:46:03,423 - src.reporters.html_reporter - INFO -    Original path: output/screenshots/email_verification_2d844024_03_email_details_20250821_164523.png
+2025-08-21 16:46:03,423 - src.reporters.html_reporter - INFO -    File exists: True
+2025-08-21 16:46:03,427 - src.reporters.html_reporter - INFO -    Copied to: output/reports/screenshots/email_4_malware_20250821_164603.png
+2025-08-21 16:46:03,428 - src.reporters.html_reporter - INFO -    Copy successful: True
+2025-08-21 16:46:03,428 - src.reporters.html_reporter - INFO -    HTML relative path: screenshots/email_4_malware_20250821_164603.png
+2025-08-21 16:46:03,430 - src.reporters.html_reporter - INFO - Enhanced Dashboard saved: output/reports/email_security_dashboard_20250821_164603.html
+2025-08-21 16:46:03,430 - src.reporters.html_reporter - INFO - Screenshots directory: output/reports/screenshots
+2025-08-21 16:46:03,431 - src.reporters.html_reporter - INFO - Screenshot files in directory:
+2025-08-21 16:46:03,431 - src.reporters.html_reporter - INFO -    email_2_clean_20250821_164603.png (102,009 bytes)
+2025-08-21 16:46:03,431 - src.reporters.html_reporter - INFO -    email_4_malware_20250821_164603.png (105,558 bytes)
+2025-08-21 16:46:03,431 - src.reporters.html_reporter - INFO -    email_3_phishing_20250821_164603.png (105,187 bytes)
+2025-08-21 16:46:03,431 - src.reporters.html_reporter - INFO -    email_1_clean_20250821_164603.png (98,535 bytes)
+2025-08-21 16:46:03,432 - src.reporters.html_reporter - INFO - Report structure:
+2025-08-21 16:46:03,432 - src.reporters.html_reporter - INFO -    HTML file: True
+2025-08-21 16:46:03,432 - src.reporters.html_reporter - INFO -    Screenshots dir: True
+2025-08-21 16:46:03,432 - src.reporters.html_reporter - INFO -    Total screenshots: 4
+2025-08-21 16:46:03,432 - src.core.mail_verifier - INFO - 
+Professional Dashboard Generated: output/reports/email_security_dashboard_20250821_164603.html
+2025-08-21 16:46:03,432 - src.core.mail_verifier - INFO - Features:
+2025-08-21 16:46:03,432 - src.core.mail_verifier - INFO -    • Interactive stats and charts
+2025-08-21 16:46:03,432 - src.core.mail_verifier - INFO -    • Integrated screenshots with click-to-expand
+2025-08-21 16:46:03,433 - src.core.mail_verifier - INFO -    • AI analysis with confidence visualizations
+2025-08-21 16:46:03,433 - src.core.mail_verifier - INFO -    • Mobile-responsive design
+2025-08-21 16:46:03,433 - src.core.mail_verifier - INFO -    • Clean, professional codebase

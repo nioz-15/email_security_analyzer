@@ -1,0 +1,27 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  email-analyzer:
+    build: .
+    container_name: email-security-analyzer
+    volumes:
+      - ./allure-reports:/app/reports:ro
+      - ./output:/app/output
+      - ./.env:/app/.env:ro
+    environment:
+      - BROWSER_HEADLESS=true
+    command: python main.py --reports /app/reports --output /app/output
+
+  # Development service with interactive shell
+  email-analyzer-dev:
+    build: .
+    container_name: email-analyzer-dev
+    volumes:
+      - .:/app
+      - ./allure-reports:/app/reports:ro
+    environment:
+      - BROWSER_HEADLESS=false
+    stdin_open: true
+    tty: true
+    command: /bin/bash
