@@ -10,7 +10,9 @@ import logging
 from datetime import datetime
 from pathlib import Path
 from typing import Dict
+
 from playwright.async_api import async_playwright, Page, Browser
+
 from ..models.data_models import FailedTest, MailVerificationResult
 from config.settings import settings
 
@@ -31,9 +33,9 @@ class PlaywrightMailboxVerifier:
     async def verify_mail_delivery(self, failed_test: FailedTest) -> MailVerificationResult:
         """Verify mail delivery with proper search logic."""
 
-        logger.info(f"🌐 Verifying mail for: {failed_test.mail_address}")
-        logger.info(f"📧 Searching for ORIGINAL subject: {failed_test.mail_subject[:50]}...")
-        logger.info(f"🔍 Expected behavior: {failed_test.expected_behavior}")
+        logger.info(f"Verifying mail for: {failed_test.mail_address}")
+        logger.info(f"Searching for ORIGINAL subject: {failed_test.mail_subject[:50]}...")
+        logger.info(f"Expected behavior: {failed_test.expected_behavior}")
 
         try:
             await self._init_browser()
@@ -71,6 +73,13 @@ class PlaywrightMailboxVerifier:
             # Take search results screenshot
             search_screenshot = await self._take_screenshot(failed_test, "02_search_results")
 
+            # Extract actual email timestamp if email was found
+            actual_arrival_time = None
+            if any([search_results.get('original_found'), search_results.get('quarantined_found'),
+                    search_results.get('phishing_alert_found')]):
+                # Click on the email to open it and get full timestamp
+                actual_arrival_time = await self._click_email_and_extract_timestamp(failed_test)
+
             # Analyze results with proper logic
             analysis_result = await self._analyze_results(failed_test, search_results)
 
@@ -91,7 +100,7 @@ class PlaywrightMailboxVerifier:
                 expected_action=settings.get_expected_action(failed_test.mail_type),
                 actual_action=analysis_result.get('actual_action', 'No action detected'),
                 screenshot_path=analysis_result['screenshot_path'],
-                verification_timestamp=datetime.now(),
+                verification_timestamp=actual_arrival_time or datetime.now(),
                 mailbox_html_content=await self.page.content()
             )
 
@@ -119,13 +128,13 @@ class PlaywrightMailboxVerifier:
         # Find search box
         search_box = await self._find_search_box()
         if not search_box:
-            logger.warning("⚠️ Could not find search box")
+            logger.warning("Could not find search box")
             return search_results
 
         original_subject = failed_test.mail_subject
 
         # Step 1: Search for ORIGINAL subject (as delivered)
-        logger.info(f"🔍 Searching for ORIGINAL subject: {original_subject}")
+        logger.info(f"Searching for ORIGINAL subject: {original_subject}")
         original_result = await self._search_for_term(search_box, original_subject)
         if original_result:
             search_results['original_found'] = True
@@ -134,7 +143,7 @@ class PlaywrightMailboxVerifier:
         # Step 2: Search for QUARANTINED version (for EICAR/malware)
         if failed_test.mail_type in ['eicar', 'malware']:
             quarantined_subject = f"Quarantined [{original_subject}]"
-            logger.info(f"🔍 Searching for QUARANTINED version: {quarantined_subject}")
+            logger.info(f"Searching for QUARANTINED version: {quarantined_subject}")
             quarantined_result = await self._search_for_term(search_box, quarantined_subject)
             if quarantined_result:
                 search_results['quarantined_found'] = True
@@ -143,7 +152,7 @@ class PlaywrightMailboxVerifier:
         # Step 3: Search for PHISHING ALERT version (for phishing)
         if failed_test.mail_type == 'phishing':
             phishing_alert_subject = f"Phishing Alert! [{original_subject}]"
-            logger.info(f"🔍 Searching for PHISHING ALERT version: {phishing_alert_subject}")
+            logger.info(f"Searching for PHISHING ALERT version: {phishing_alert_subject}")
             phishing_result = await self._search_for_term(search_box, phishing_alert_subject)
             if phishing_result:
                 search_results['phishing_alert_found'] = True
@@ -162,7 +171,7 @@ class PlaywrightMailboxVerifier:
 
             content = await self.page.content()
             found = term.lower() in content.lower()
-            logger.info(f"   {'✅' if found else '❌'} Search result: {term[:40]}...")
+            logger.info(f"   {'Success' if found else 'Fail'} Search result: {term[:40]}...")
             return found
 
         except Exception as e:
@@ -313,3 +322,233 @@ class PlaywrightMailboxVerifier:
         """Clean up browser."""
         if self.browser:
             await self.browser.close()
+
+    async def _click_email_and_extract_timestamp(self, failed_test: FailedTest):
+        """Click on the found email and extract the full timestamp."""
+        try:
+            logger.info("Clicking on email to extract full timestamp...")
+
+            # Wait a moment for search results to be fully loaded
+            await asyncio.sleep(2)
+
+            # Find the email subject in the search results and click on it
+            subject_to_find = failed_test.mail_subject[:50]  # Use first 50 chars for matching
+
+            # Try different selectors to find the email in the list
+            email_selectors = [
+                f'[aria-label*="{subject_to_find}"]',
+                f'[title*="{subject_to_find}"]',
+                f'*:has-text("{subject_to_find}")',
+                # More specific Outlook selectors
+                '[data-testid="message-subject"]',
+                '.ms-List-cell [role="gridcell"]',
+                '.ms-MessageCard',
+                '.ms-DetailsRow',
+                # Generic selectors for email items
+                '[role="row"]',
+                '.email-item',
+                '.message-item'
+            ]
+
+            email_clicked = False
+
+            # Try to find and click the email
+            for selector in email_selectors:
+                try:
+                    elements = await self.page.query_selector_all(selector)
+                    for element in elements:
+                        text_content = await element.text_content()
+                        if text_content and subject_to_find[:30] in text_content:
+                            logger.info(f"Found email element with text: {text_content[:100]}...")
+                            await element.click()
+                            email_clicked = True
+                            break
+
+                    if email_clicked:
+                        break
+
+                except Exception as e:
+                    logger.debug(f"Selector {selector} failed: {e}")
+                    continue
+
+            if not email_clicked:
+                # Try a more general approach - click on the first email item
+                try:
+                    first_email = await self.page.wait_for_selector('[role="row"], .ms-List-cell, .ms-DetailsRow', timeout=5000)
+                    if first_email:
+                        await first_email.click()
+                        email_clicked = True
+                        logger.info("Clicked on first email item as fallback")
+                except Exception:
+                    pass
+
+            if email_clicked:
+                # Wait for email details to load
+                await asyncio.sleep(3)
+
+                # Now extract the full timestamp from the opened email
+                return await self._extract_full_timestamp_from_email()
+            else:
+                logger.warning("Could not click on email to extract timestamp")
+                return None
+
+        except Exception as e:
+            logger.error(f"Error clicking email and extracting timestamp: {e}")
+            return None
+
+    async def _extract_full_timestamp_from_email(self):
+        """Extract the full timestamp from the opened email details."""
+        try:
+            # Wait for email content to fully load
+            await asyncio.sleep(2)
+
+            # Try different selectors to find the full email timestamp in the opened email
+            timestamp_selectors = [
+                # Outlook specific selectors for opened email
+                '[data-testid="message-timestamp"]',
+                '.ms-MessageCard-timestamp',
+                '.ms-MessageCard-header time',
+                '.ms-MessageHeader-timestamp',
+                '.ms-DetailsHeader-timestamp',
+                '.messageHeader-timestamp',
+                '[aria-label*="Received"]',
+                '[aria-label*="Sent"]',
+                # Look for elements with datetime attributes
+                'time[datetime]',
+                # Look for elements containing full date patterns
+                '[title*="AM"], [title*="PM"]',
+                '[aria-label*="AM"], [aria-label*="PM"]'
+            ]
+
+            for selector in timestamp_selectors:
+                try:
+                    element = await self.page.wait_for_selector(selector, timeout=2000)
+                    if element:
+                        # Try datetime attribute first
+                        datetime_attr = await element.get_attribute('datetime')
+                        if datetime_attr:
+                            parsed_time = self._parse_datetime_string(datetime_attr)
+                            if parsed_time:
+                                logger.info(f"Extracted timestamp from datetime attribute: {parsed_time}")
+                                return parsed_time
+
+                        # Try title attribute
+                        title_attr = await element.get_attribute('title')
+                        if title_attr:
+                            parsed_time = self._parse_datetime_string(title_attr)
+                            if parsed_time:
+                                logger.info(f"Extracted timestamp from title: {parsed_time}")
+                                return parsed_time
+
+                        # Try text content
+                        text_content = await element.text_content()
+                        if text_content:
+                            parsed_time = self._parse_datetime_string(text_content)
+                            if parsed_time:
+                                logger.info(f"Extracted timestamp from text: {parsed_time}")
+                                return parsed_time
+
+                except Exception:
+                    continue
+
+            # If no specific element found, search the entire page content for full date patterns
+            page_content = await self.page.content()
+
+            import re
+
+            # Look for full date patterns like "Mon 8/18/2025 9:58 AM"
+            date_patterns = [
+                r'(Mon|Tue|Wed|Thu|Fri|Sat|Sun)\s+(\d{1,2}/\d{1,2}/\d{4})\s+(\d{1,2}:\d{2}\s+(?:AM|PM))',
+                r'(\d{1,2}/\d{1,2}/\d{4})\s+(\d{1,2}:\d{2}\s+(?:AM|PM))',
+                r'Received.*?(\d{1,2}/\d{1,2}/\d{4}.*?\d{1,2}:\d{2}.*?(?:AM|PM))',
+                r'Sent.*?(\d{1,2}/\d{1,2}/\d{4}.*?\d{1,2}:\d{2}.*?(?:AM|PM))',
+            ]
+
+            for pattern in date_patterns:
+                matches = re.findall(pattern, page_content, re.IGNORECASE)
+                if matches:
+                    match = matches[0]
+                    if isinstance(match, tuple):
+                        if len(match) == 3:  # Day, Date, Time format
+                            full_date = f"{match[1]} {match[2]}"
+                        elif len(match) == 2:  # Date, Time format
+                            full_date = f"{match[0]} {match[1]}"
+                        else:
+                            full_date = match[0]
+                    else:
+                        full_date = match
+
+                    parsed_time = self._parse_datetime_string(full_date)
+                    if parsed_time:
+                        logger.info(f"Extracted timestamp from page content: {parsed_time}")
+                        return parsed_time
+
+            logger.warning("Could not extract full email timestamp from opened email")
+            return None
+
+        except Exception as e:
+            logger.error(f"Error extracting timestamp from opened email: {e}")
+            return None
+
+    def _parse_datetime_string(self, date_string):
+        """Parse various datetime string formats."""
+        try:
+            from datetime import datetime
+            import re
+
+            # Clean the string
+            cleaned = re.sub(r'\s+', ' ', date_string.strip())
+            logger.info(f"Attempting to parse datetime string: '{cleaned}'")
+
+            # Common date formats to try
+            formats = [
+                "%m/%d/%Y %I:%M %p",  # 8/18/2025 9:58 AM
+                "%m/%d/%Y %I:%M:%S %p",  # 8/18/2025 9:58:00 AM
+                "%Y-%m-%d %H:%M:%S",  # 2025-08-18 09:58:00
+                "%Y-%m-%dT%H:%M:%S",  # 2025-08-18T09:58:00
+                "%Y-%m-%dT%H:%M:%SZ",  # 2025-08-18T09:58:00Z
+                "%a %m/%d/%Y %I:%M %p",  # Mon 8/18/2025 9:58 AM
+                "%a, %d %b %Y %H:%M:%S",  # Mon, 18 Aug 2025 09:58:00
+                "%d %b %Y %I:%M %p",  # 18 Aug 2025 9:58 AM
+                "%a, %m/%d/%Y %I:%M %p",  # Mon, 8/18/2025 9:58 AM
+                "%B %d, %Y %I:%M %p",  # August 18, 2025 9:58 AM
+                "%b %d, %Y %I:%M %p",  # Aug 18, 2025 9:58 AM
+            ]
+
+            for fmt in formats:
+                try:
+                    parsed = datetime.strptime(cleaned, fmt)
+                    logger.info(f"Successfully parsed datetime: {parsed}")
+                    return parsed
+                except ValueError:
+                    continue
+
+            # Try to extract date and time parts if full parsing fails
+            # Pattern for "Mon 8/18/2025 9:58 AM" or "8/18/2025 9:58 AM"
+            full_date_match = re.search(r'(\d{1,2}/\d{1,2}/\d{4})\s+(\d{1,2}:\d{2})\s*(AM|PM)', cleaned, re.IGNORECASE)
+            if full_date_match:
+                date_part = full_date_match.group(1)
+                time_part = full_date_match.group(2)
+                ampm_part = full_date_match.group(3).upper()
+                full_time = f"{date_part} {time_part} {ampm_part}"
+                try:
+                    parsed = datetime.strptime(full_time, "%m/%d/%Y %I:%M %p")
+                    logger.info(f"Successfully parsed extracted datetime: {parsed}")
+                    return parsed
+                except ValueError:
+                    pass
+
+            # If we only have partial time like "Mon 9:57 AM", we need more context
+            # This suggests we didn't click on the email properly
+            partial_match = re.search(r'(Mon|Tue|Wed|Thu|Fri|Sat|Sun)\s+(\d{1,2}:\d{2})\s*(AM|PM)', cleaned, re.IGNORECASE)
+            if partial_match:
+                logger.warning(f"Found partial timestamp '{cleaned}' - email might not be fully opened")
+                # We can't parse this without the date, so return None to indicate we need to try clicking again
+                return None
+
+            logger.warning(f"Could not parse datetime string: {cleaned}")
+            return None
+
+        except Exception as e:
+            logger.error(f"Error parsing datetime string '{date_string}': {e}")
+            return None
