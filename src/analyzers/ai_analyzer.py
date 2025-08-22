@@ -63,7 +63,8 @@ class AIAnalyzer:
 
             # Validate AI response makes sense
             if (parsed_result.classification == ClassificationType.CODE_ISSUE.value
-                    and verification_result.mail_found and verification_result.action_applied):
+                and verification_result.mail_found and verification_result.action_applied):
+
                 logger.warning("AI classified as CODE_ISSUE but email found with correct action - this seems wrong!")
                 logger.warning("Using intelligent fallback instead")
 
@@ -110,9 +111,9 @@ class AIAnalyzer:
                                 "type": "text",
                                 "text": """Analyze this email security screenshot. Look for:
 
-1. CLEAN emails: Should have original subject (no prefix) ✅
-2. PHISHING emails: Should have "Phishing Alert!" prefix ⚠️  
-3. EICAR/MALWARE emails: Should have "Quarantined" prefix 🛡️
+1. CLEAN emails: Should have original subject (no prefix) 
+2. PHISHING emails: Should have "Phishing Alert!" prefix  
+3. EICAR/MALWARE emails: Should have "Quarantined" prefix 
 
 Report exactly what you see in the subject lines and any security modifications."""
                             },
@@ -138,14 +139,44 @@ Report exactly what you see in the subject lines and any security modifications.
                                screenshot_analysis: str) -> str:
         """Build crystal-clear analysis prompt with explicit examples."""
 
-        # Calculate delivery timing context
+        # Calculate delivery timing context with detailed analysis
         timing_context = ""
+        timing_analysis = ""
+
         if failed_test.sent_timestamp and verification_result.verification_timestamp:
-            delay_minutes = (
-                                        verification_result.verification_timestamp - failed_test.sent_timestamp).total_seconds() / 60
-            timing_context = f"DELIVERY TIMING: Email was delayed by approximately {delay_minutes:.1f} minutes"
+            sent_time_str = failed_test.sent_timestamp.strftime("%Y-%m-%d %H:%M:%S")
+            arrived_time_str = verification_result.verification_timestamp.strftime("%Y-%m-%d %H:%M:%S")
+            delay_minutes = (verification_result.verification_timestamp - failed_test.sent_timestamp).total_seconds() / 60
+
+            timing_context = f"""DELIVERY TIMING ANALYSIS:
+- Email Sent Time: {sent_time_str}
+- Email Arrived Time: {arrived_time_str}  
+- Total Delivery Delay: {delay_minutes:.1f} minutes
+
+TIMING INTERPRETATION:
+"""
+
+            # Provide context for the AI about what different delays might mean
+            if delay_minutes < 1:
+                timing_analysis = "VERY FAST delivery (< 1 minute) - Likely normal email flow"
+            elif delay_minutes < 5:
+                timing_analysis = "FAST delivery (< 5 minutes) - Normal email processing"
+            elif delay_minutes < 15:
+                timing_analysis = "MODERATE delay (5-15 minutes) - Could indicate minor processing delays"
+            elif delay_minutes < 60:
+                timing_analysis = "SIGNIFICANT delay (15-60 minutes) - May indicate security processing or system load"
+            elif delay_minutes < 240:
+                timing_analysis = "LONG delay (1-4 hours) - Likely indicates security analysis, quarantine processing, or system issues"
+            else:
+                timing_analysis = "VERY LONG delay (4+ hours) - Strong indication of security processing, manual review, or system problems"
+
+            timing_context += timing_analysis
         else:
-            timing_context = "DELIVERY TIMING: Test failed after 5-minute timeout, but email was later found in mailbox"
+            timing_context = """DELIVERY TIMING ANALYSIS:
+- Email Sent Time: Unknown
+- Email Arrived Time: Unknown  
+- Total Delivery Delay: Cannot be calculated
+- Note: Test failed after timeout, but email was later found in mailbox"""
 
         expected_classification = (
             ClassificationType.DELAY_ISSUE.value
@@ -173,37 +204,47 @@ CLASSIFICATION DEFINITIONS WITH EXAMPLES:
 
 **DELAY_ISSUE** = Security system worked correctly, just slow delivery
 Examples:
-- PHISHING email found WITH "Phishing Alert!" prefix → DELAY_ISSUE ✅
-- EICAR/MALWARE email found WITH "Quarantined" prefix → DELAY_ISSUE ✅
-- CLEAN email found WITHOUT any modifications → DELAY_ISSUE ✅
-- Email took longer than expected but security worked → DELAY_ISSUE ✅
+- PHISHING email found WITH "Phishing Alert!" prefix → DELAY_ISSUE 
+- EICAR/MALWARE email found WITH "Quarantined" prefix → DELAY_ISSUE 
+- CLEAN email found WITHOUT any modifications → DELAY_ISSUE 
+- Email took longer than expected but security worked → DELAY_ISSUE 
+- Long delivery times (30+ minutes) often indicate security processing
 
 **REAL_ISSUE** = Security system failed to protect users  
 Examples:
-- PHISHING email found WITHOUT phishing alert → REAL_ISSUE ❌
-- EICAR/MALWARE email found WITHOUT quarantine → REAL_ISSUE ❌
-- CLEAN email incorrectly quarantined → REAL_ISSUE ❌
-- Wrong security action applied → REAL_ISSUE ❌
+- PHISHING email found WITHOUT phishing alert → REAL_ISSUE 
+- EICAR/MALWARE email found WITHOUT quarantine → REAL_ISSUE 
+- CLEAN email incorrectly quarantined → REAL_ISSUE 
+- Wrong security action applied → REAL_ISSUE 
 
 **CODE_ISSUE** = Technical/infrastructure problems, not security
 Examples:
-- Browser login failures → CODE_ISSUE 🔧
-- Email not found due to search problems → CODE_ISSUE 🔧
-- Network/authentication issues → CODE_ISSUE 🔧
-- Test framework bugs → CODE_ISSUE 🔧
+- Browser login failures → CODE_ISSUE 
+- Email not found due to search problems → CODE_ISSUE 
+- Network/authentication issues → CODE_ISSUE 
+- Test framework bugs → CODE_ISSUE 
+
+TIMING CONSIDERATIONS FOR CLASSIFICATION:
+- Short delays (< 15 minutes) with correct security action = DELAY_ISSUE
+- Long delays (30+ minutes) with correct security action = DELAY_ISSUE (security processing takes time)
+- Very long delays (4+ hours) might indicate manual review processes = DELAY_ISSUE if security worked
+- Immediate delivery of dangerous emails without security action = REAL_ISSUE
+- Missing emails despite reasonable time = CODE_ISSUE (unless security blocked them entirely)
 
 DECISION TREE FOR THIS TEST:
 1. Was the email found? {verification_result.mail_found}
 2. Was the correct security action applied? {verification_result.action_applied}
+3. Does the delivery timing make sense for the mail type and action?
 
-If BOTH are YES → This is DELAY_ISSUE (security worked, just slow)
-If email found but WRONG action → This is REAL_ISSUE (security failed)
-If email NOT found due to technical issues → This is CODE_ISSUE (infrastructure)
+If BOTH email found AND correct action applied → DELAY_ISSUE (security worked)
+If email found but WRONG action → REAL_ISSUE (security failed)
+If email NOT found due to technical issues → CODE_ISSUE (infrastructure)
 
 BASED ON THE DATA ABOVE:
 - Email found: {verification_result.mail_found}
 - Correct action applied: {verification_result.action_applied}
 - Result: {verification_result.actual_action}
+- Timing context: {timing_analysis if timing_analysis else 'No timing data available'}
 
 This should be classified as: {expected_classification}
 
@@ -212,8 +253,8 @@ This should be classified as: {expected_classification}
 Provide your analysis in this exact format:
 Classification: [DELAY_ISSUE|REAL_ISSUE|CODE_ISSUE]
 Confidence: [0-100]%
-Explanation: [Brief explanation of why this classification is correct]
-Recommended Action: [What should be done next]
+Explanation: [Brief explanation considering both security action and delivery timing]
+Recommended Action: [What should be done next, considering timing insights]
 """
         return prompt
 

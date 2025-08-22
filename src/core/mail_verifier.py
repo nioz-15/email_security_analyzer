@@ -110,7 +110,7 @@ class CompleteMailVerifier:
         if verification.mail_found:
             mail_type = failed_test.mail_type
 
-            logger.info("🧠 Intelligent Classification Logic:")
+            logger.info("Intelligent Classification Logic:")
             logger.info(f"   Mail Type: {mail_type}")
             logger.info(f"   Mail Found: {verification.mail_found}")
             logger.info(f"   Original Found: {verification.original_subject_found}")
@@ -127,7 +127,7 @@ class CompleteMailVerifier:
             # Override AI if it's clearly wrong
             if logic_classification != ai_analysis.classification:
                 logger.info(
-                    f"   🔄 OVERRIDING AI: Logic says {logic_classification}, AI says {ai_analysis.classification}"
+                    f"   OVERRIDING AI: Logic says {logic_classification}, AI says {ai_analysis.classification}"
                 )
                 if logic_classification in [ClassificationType.DELAY_ISSUE.value, ClassificationType.REAL_ISSUE.value]:
                     # Logic is confident about security classifications
@@ -168,8 +168,8 @@ class CompleteMailVerifier:
     async def _generate_final_report(self):
         """Generate the final HTML report."""
         html_path = await self.html_reporter.generate_professional_report(self.complete_reports)
-        logger.info(f"\n🎉 Professional Dashboard Generated: {html_path}")
-        logger.info("📊 Features:")
+        logger.info(f"\nProfessional Dashboard Generated: {html_path}")
+        logger.info("Features:")
         logger.info("   • Interactive stats and charts")
         logger.info("   • Integrated screenshots with click-to-expand")
         logger.info("   • AI analysis with confidence visualizations")

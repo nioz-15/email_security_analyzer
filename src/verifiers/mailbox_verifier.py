@@ -10,9 +10,7 @@ import logging
 from datetime import datetime
 from pathlib import Path
 from typing import Dict
-
 from playwright.async_api import async_playwright, Page, Browser
-
 from ..models.data_models import FailedTest, MailVerificationResult
 from config.settings import settings
 
@@ -315,7 +313,7 @@ class PlaywrightMailboxVerifier:
         filename = f"email_verification_{email_hash}_{suffix}_{timestamp}.png"
         screenshot_path = self.screenshots_dir / filename
         await self.page.screenshot(path=str(screenshot_path), full_page=True)
-        logger.info(f"📸 Screenshot saved: {filename}")
+        logger.info(f"Screenshot saved: {filename}")
         return str(screenshot_path)
 
     async def _cleanup_browser(self):

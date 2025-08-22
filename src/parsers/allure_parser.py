@@ -12,7 +12,6 @@ import logging
 from pathlib import Path
 from datetime import datetime
 from typing import List, Dict, Optional
-
 from ..models.data_models import FailedTest
 from ..utils.helpers import generate_test_id
 
@@ -81,19 +80,19 @@ class AllureParser:
         script_pattern = r'<script[^>]*>(.*?)</script>'
         scripts = re.findall(script_pattern, content, re.DOTALL | re.IGNORECASE)
 
-        logger.info(f"   🔎 Checking {len(scripts)} script sections for AssertionError")
+        logger.info(f"   Checking {len(scripts)} script sections for AssertionError")
 
         # Find the large script (Script with 2M+ chars)
         assertion_error_count = 0
         for i, script in enumerate(scripts):
             if len(script) > 1000000:  # The big script with 2M+ chars
-                logger.info(f"   🎯 Analyzing Large Script {i + 1} (length: {len(script):,} chars)")
+                logger.info(f"   Analyzing Large Script {i + 1} (length: {len(script):,} chars)")
 
                 # Find ALL base64 sections within this script
                 base64_pattern = r'[A-Za-z0-9+/]{100,}={0,2}'
                 base64_matches = re.findall(base64_pattern, script)
 
-                logger.info(f"   📦 Found {len(base64_matches)} base64 sections - checking for AssertionError")
+                logger.info(f"   Found {len(base64_matches)} base64 sections - checking for AssertionError")
 
                 # Check EVERY base64 section for AssertionError
                 for j, b64_data in enumerate(base64_matches):
@@ -105,7 +104,7 @@ class AllureParser:
 
                         if has_assertion_error:
                             assertion_error_count += 1
-                            logger.info(f"      🚨 Base64 section {j + 1} contains AssertionError (real failure)")
+                            logger.info(f"      Base64 section {j + 1} contains AssertionError (real failure)")
 
                             # Parse this AssertionError failure
                             section_tests = self._parse_assertion_error_attachment(decoded, j, source_file)
@@ -114,14 +113,14 @@ class AllureParser:
                         # Progress tracking
                         if (j + 1) % 50 == 0:
                             logger.info(
-                                f"      📊 Processed {j + 1}/{len(base64_matches)} base64 sections... "
+                                f"      Processed {j + 1}/{len(base64_matches)} base64 sections... "
                                 f"Found {assertion_error_count} AssertionErrors"
                             )
 
                     except Exception:
                         continue
 
-        logger.info(f"   🎯 Found {assertion_error_count} base64 sections with AssertionError")
+        logger.info(f"   Found {assertion_error_count} base64 sections with AssertionError")
         return failed_tests
 
     def _parse_assertion_error_attachment(self, decoded_content: str, attachment_index: int,
@@ -145,12 +144,12 @@ class AllureParser:
                 all_matches.append(match)
                 pattern_info.append(f"Pattern{idx + 1}")
             if matches:
-                logger.info(f"      📍 Pattern {idx + 1} matched {len(matches)} AssertionError(s)")
+                logger.info(f"      Pattern {idx + 1} matched {len(matches)} AssertionError(s)")
 
         if not all_matches:
             return failed_tests
 
-        logger.info(f"      🎯 Found {len(all_matches)} total AssertionError(s) in this section")
+        logger.info(f"      Found {len(all_matches)} total AssertionError(s) in this section")
 
         # Track processed subjects to avoid duplicates within same section
         processed_in_section = set()
@@ -159,7 +158,7 @@ class AllureParser:
             raw_subject = match[0].strip()
             raw_email = match[1].strip()
 
-            logger.info(f"      📧 Processing AssertionError {i + 1} (via {pattern_used}):")
+            logger.info(f"      Processing AssertionError {i + 1} (via {pattern_used}):")
             logger.info(f"          Raw subject: {raw_subject[:50]}...")
             logger.info(f"          Raw email: {raw_email}")
 
@@ -169,30 +168,30 @@ class AllureParser:
 
             if not subject or not email_addr:
                 logger.warning(
-                    f"      ⚠️ Skipping invalid extraction: subject='{raw_subject[:50]}', email='{raw_email[:50]}'"
+                    f"      Skipping invalid extraction: subject='{raw_subject[:50]}', email='{raw_email[:50]}'"
                 )
                 continue
 
-            logger.info(f"      📧 Processing valid AssertionError {i + 1}: {subject[:40]}... → {email_addr}")
+            logger.info(f"      Processing valid AssertionError {i + 1}: {subject[:40]}... → {email_addr}")
 
             # Extract complete test parameters for this specific failure
             test_params = self._extract_complete_test_parameters(decoded_content, subject, email_addr)
 
             logger.info(
-                f"      🏷️ Detected mail type: {test_params['mail_type'].upper()} for subject: {subject[:30]}..."
+                f"      Detected mail type: {test_params['mail_type'].upper()} for subject: {subject[:30]}..."
             )
 
             # Check for duplicates within this section using email-based key
             section_key = f"{subject}_{email_addr}_{test_params['mail_type']}"
             if section_key in processed_in_section:
                 logger.info(
-                    f"      🔄 Skipping duplicate email in same section: {test_params['mail_type']} - {subject[:30]}..."
+                    f"      Skipping duplicate email in same section: {test_params['mail_type']} - {subject[:30]}..."
                 )
                 continue
 
             processed_in_section.add(section_key)
 
-            logger.info(f"      ✅ Processing unique email: {test_params['mail_type']} - {subject[:30]}...")
+            logger.info(f"      Processing unique email: {test_params['mail_type']} - {subject[:30]}...")
 
             test = FailedTest(
                 test_name=test_params['test_name'],
@@ -210,7 +209,7 @@ class AllureParser:
 
             failed_tests.append(test)
             logger.info(
-                f"         ✅ VALID ASSERTION ERROR: {test_params['test_name']} - "
+                f"         VALID ASSERTION ERROR: {test_params['test_name']} - "
                 f"{test_params['mail_type'].upper()}: {subject[:40]}..."
             )
 
@@ -243,20 +242,20 @@ class AllureParser:
 
         for pattern in invalid_patterns:
             if re.search(pattern, subject, re.IGNORECASE):
-                logger.warning(f"      ❌ Rejecting subject (looks like metadata): {subject[:50]}...")
+                logger.warning(f"      Rejecting subject (looks like metadata): {subject[:50]}...")
                 return ""
 
         # Must look like a reasonable email subject
         if len(subject) < 5 or len(subject) > 200:
-            logger.warning(f"      ❌ Rejecting subject (bad length {len(subject)}): {subject[:50]}...")
+            logger.warning(f"      Rejecting subject (bad length {len(subject)}): {subject[:50]}...")
             return ""
 
         # Should contain some reasonable characters
         if not re.search(r'[A-Za-z0-9_-]', subject):
-            logger.warning(f"      ❌ Rejecting subject (no valid chars): {subject[:50]}...")
+            logger.warning(f"      Rejecting subject (no valid chars): {subject[:50]}...")
             return ""
 
-        logger.info(f"      ✅ Cleaned subject: {raw_subject[:30]} → {subject[:30]}")
+        logger.info(f"      Cleaned subject: {raw_subject[:30]} → {subject[:30]}")
         return subject
 
     def _validate_and_clean_email(self, raw_email: str) -> str:
@@ -279,7 +278,7 @@ class AllureParser:
             logger.warning(f"      Rejecting email (invalid format): {email}")
             return ""
 
-        logger.info(f"      ✅ Cleaned email: {raw_email[:50]} → {email}")
+        logger.info(f"      Cleaned email: {raw_email[:50]} → {email}")
         return email
 
     def _extract_complete_test_parameters(self, content: str, subject: str, email_addr: str) -> Dict:
@@ -354,12 +353,12 @@ class AllureParser:
                 test_name = max(matches, key=len).strip()
                 # Clean up common variations
                 test_name = re.sub(r'\s+', ' ', test_name)
-                logger.info(f"   🏷️ Extracted specific test name: {test_name}")
+                logger.info(f"   Extracted specific test name: {test_name}")
                 return test_name
 
         # Fallback to mail type based name if no specific test found
         fallback_name = f"Email {mail_type.title()} inline - SMTP"
-        logger.info(f"   🏷️ Using fallback test name: {fallback_name}")
+        logger.info(f"   Using fallback test name: {fallback_name}")
         return fallback_name
 
     def _extract_test_context(self, content: str) -> str:
@@ -398,12 +397,12 @@ class AllureParser:
             # Use the most specific context (prioritize smoke/smartapi over IDs)
             for ctx in ["smartapi", "smoke"]:
                 if ctx in contexts:
-                    logger.info(f"   🏷️ Extracted test context: {ctx}")
+                    logger.info(f"   Extracted test context: {ctx}")
                     return ctx
 
             # Use first context if no specific category found
             context = contexts[0]
-            logger.info(f"   🏷️ Extracted test context: {context}")
+            logger.info(f"   Extracted test context: {context}")
             return context
 
         return "default"
@@ -449,7 +448,7 @@ class AllureParser:
             return 'malware'  # Use 'eicar' for malware tests
         else:
             # Log for debugging
-            logger.info(f"      🔍 Unable to determine mail type for subject: {subject[:50]}...")
+            logger.info(f"      Unable to determine mail type for subject: {subject[:50]}...")
             return 'unknown'
 
     def _deduplicate_by_email(self, failed_tests: List[FailedTest]) -> List[FailedTest]:

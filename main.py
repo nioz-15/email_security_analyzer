@@ -19,11 +19,12 @@ REPORTS_FOLDER = "/Users/ahmadzidane/Downloads/allure-reports"
 MAILBOX_PASSWORD = ""
 OPENAI_API_KEY = ""
 
+
 # Optional Settings
 OUTPUT_DIRECTORY = "./output"  # Custom output directory (None for default)
 LOG_LEVEL = "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
 LOG_FILE = None  # Custom log file path (None for default)
-BROWSER_HEADLESS = False  # Run browser in headless mode
+BROWSER_HEADLESS = True  # Run browser in headless mode
 BROWSER_TIMEOUT = 300  # Browser timeout in seconds
 
 # Application Info
@@ -36,6 +37,7 @@ if OPENAI_API_KEY:
     os.environ['OPENAI_API_KEY'] = OPENAI_API_KEY
 if MAILBOX_PASSWORD:
     os.environ['MAILBOX_PASSWORD'] = MAILBOX_PASSWORD
+
 
 # Add src to Python path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
