@@ -661,11 +661,7 @@ async def run_real_analysis(
         })
 
         verifier = PlaywrightMailboxVerifier(
-            password=MAILBOX_PASSWORD,
-            webmail_url=webmail_url,
-            headless=browser_headless,
-            timeout=browser_timeout,
-            output_folder=output_dir
+            password=MAILBOX_PASSWORD
         )
 
         # Initialize browser
@@ -739,6 +735,7 @@ async def run_real_analysis(
         # Fallback to mock analysis
         return run_mock_analysis(reports_dir)
 
+
 def extract_tests_manually(reports_dir: str) -> list:
     """Manual extraction to debug what's in the HTML files"""
 
@@ -757,114 +754,103 @@ def extract_tests_manually(reports_dir: str) -> list:
                     # Look for base64 encoded data (common in Allure reports)
                     import re
                     import base64
+                    from datetime import datetime
 
-                    # Find base64 encoded strings
-                    base64_pattern = r"'([A-Za-z0-9+/=]{50,})'"
+                    # FIXED: Use the correct base64 pattern that we know works
+                    base64_pattern = r"d\('data/attachments/[^']+','([^']+)'\)"
                     base64_matches = re.findall(base64_pattern, content)
 
                     print(f"🔍 Found {len(base64_matches)} base64 strings")
 
-                    decoded_content = []
+                    processed_subjects = set()  # Track unique subjects to avoid duplicates
 
                     for i, b64_string in enumerate(base64_matches):
                         try:
                             decoded = base64.b64decode(b64_string).decode('utf-8', errors='ignore')
-                            decoded_content.append(decoded)
-                            print(f"📖 Decoded string {i+1}: {decoded[:200]}...")
+                            print(f"📖 Decoded string {i + 1}: {decoded[:200]}...")
 
                             # Look for email test failures in decoded content
-                            if ('email' in decoded.lower() and
-                                ('not found' in decoded.lower() or 'wasn\'t found' in decoded.lower() or
-                                 'failed' in decoded.lower() or 'error' in decoded.lower())):
-
+                            if "Email wasn't found" in decoded and "AUTO_" in decoded:
                                 print(f"🎯 Found potential email test failure in decoded content!")
 
-                                # Extract email subject
+                                # Extract email subject and recipient using the patterns we know work
                                 subject_match = re.search(r"Subject='([^']+)'", decoded)
-                                email_match = re.search(r"Inbox='([^']+)'", decoded) or re.search(r"email[=:]'?([^'\s]+)", decoded)
+                                recipient_match = re.search(r"Inbox='([^']+)'", decoded)
 
-                                subject = subject_match.group(1) if subject_match else "Extracted Email Subject"
-                                recipient = email_match.group(1) if email_match else "test@example.com"
+                                if subject_match and recipient_match:
+                                    subject = subject_match.group(1)
+                                    recipient = recipient_match.group(1)
 
-                                print(f"   📧 Subject: {subject}")
-                                print(f"   📧 Recipient: {recipient}")
+                                    print(f"   📧 Subject: {subject}")
+                                    print(f"   📧 Recipient: {recipient}")
 
-                                # Create a FailedTest object - let's try different parameter names
-                                from src.models.data_models import FailedTest
+                                    # Skip if we've already processed this subject
+                                    if subject in processed_subjects:
+                                        print(f"   ⏭️  Skipping duplicate subject: {subject}")
+                                        continue
+                                    processed_subjects.add(subject)
 
-                                # Try different possible parameter names
-                                try:
-                                    manual_test = FailedTest(
-                                        test_name=f"extracted_email_test_{len(manual_tests) + 1}",
-                                        mail_subject=subject,
-                                        recipient_email=recipient,
-                                        error_message=decoded[:300],
-                                        test_file=file
-                                    )
-                                except TypeError as e1:
+                                    # Determine email type
+                                    if 'clean' in subject.lower():
+                                        mail_type = 'clean'
+                                    elif 'phishing' in subject.lower():
+                                        mail_type = 'phishing'
+                                    elif 'malware' in subject.lower():
+                                        mail_type = 'malware'
+                                    else:
+                                        mail_type = 'unknown'
+
+                                    # Create FailedTest object with minimal required parameters
                                     try:
-                                        manual_test = FailedTest(
-                                            test_name=f"extracted_email_test_{len(manual_tests) + 1}",
-                                            mail_subject=subject,
-                                            mail_recipient=recipient,  # Try this name
-                                            error_message=decoded[:300],
-                                            test_file=file
-                                        )
-                                    except TypeError as e2:
-                                        # Try minimal constructor
-                                        manual_test = FailedTest(
-                                            test_name=f"extracted_email_test_{len(manual_tests) + 1}",
-                                            mail_subject=subject,
-                                            error_message=decoded[:300]
-                                        )
-                                        # Add recipient as attribute if possible
-                                        try:
-                                            manual_test.recipient_email = recipient
-                                        except:
-                                            try:
-                                                manual_test.mail_recipient = recipient
-                                            except:
-                                                pass
+                                        from src.models.data_models import FailedTest
 
-                                manual_tests.append(manual_test)
-                                print(f"✅ Created manual test:")
-                                print(f"   - Subject: {subject}")
-                                print(f"   - Recipient: {recipient}")
-                                print(f"   - Error: {decoded[:100]}...")
+                                        # Use only the core required fields
+                                        manual_test = FailedTest(
+                                            test_name=f"Email {mail_type.title()} Test - {subject[:50]}",
+                                            mail_subject=subject,
+                                            mail_address=recipient,
+                                            # Note: using mail_address instead of mail_recipient
+                                            mail_type=mail_type,
+                                            failure_message="AssertionError: Email not found in recipient inbox",
+                                            expected_behavior=f"{mail_type.title()} email should be processed correctly",
+                                            test_duration=300.0,
+                                            timestamp=datetime.now(),
+                                            test_id=f"manual_{mail_type}_{abs(hash(subject)) % 10000}",
+                                            sent_timestamp=datetime.now()
+                                        )
+
+                                        manual_tests.append(manual_test)
+                                        print(f"✅ Created manual test: {mail_type.upper()} - {subject}")
+
+                                    except Exception as e:
+                                        print(f"❌ Error creating FailedTest object: {str(e)}")
+
+                                        # Even simpler fallback - create a basic object with just essential fields
+                                        try:
+                                            # Create a simple mock object for testing
+                                            manual_test = type('FailedTest', (), {
+                                                'test_name': f"Manual_Extract_{mail_type}_{i}",
+                                                'mail_subject': subject,
+                                                'mail_address': recipient,
+                                                'mail_type': mail_type,
+                                                'failure_message': decoded[:300],
+                                                'expected_behavior': f"Process {mail_type} email correctly",
+                                                'timestamp': datetime.now(),
+                                                'test_id': f"fallback_{abs(hash(subject)) % 10000}",
+                                                'sent_timestamp': datetime.now(),
+                                                'test_duration': 300.0
+                                            })()
+
+                                            manual_tests.append(manual_test)
+                                            print(f"✅ Created fallback manual test: {subject}")
+
+                                        except Exception as e2:
+                                            print(f"❌ Even fallback creation failed: {str(e2)}")
+                                            continue
 
                         except Exception as e:
                             # If base64 decode fails, skip this one
                             continue
-
-                    # Also try direct regex patterns on the original HTML
-                    direct_patterns = [
-                        r"Subject[=:'\"]\s*([^'\">\n]+)",
-                        r"mail[_\s]*subject[=:'\"]\s*([^'\">\n]+)",
-                        r"email[_\s]*subject[=:'\"]\s*([^'\">\n]+)",
-                    ]
-
-                    for pattern in direct_patterns:
-                        matches = re.findall(pattern, content, re.IGNORECASE)
-                        for match in matches:
-                            if len(match.strip()) > 10:  # Reasonable subject length
-                                print(f"🔍 Direct pattern found subject: {match}")
-
-                                try:
-                                    from src.models.data_models import FailedTest
-
-                                    manual_test = FailedTest(
-                                        test_name=f"direct_extracted_test_{len(manual_tests) + 1}",
-                                        mail_subject=match.strip(),
-                                        recipient_email="test@example.com",
-                                        error_message="Direct HTML extraction",
-                                        test_file=file
-                                    )
-
-                                    manual_tests.append(manual_test)
-                                    print(f"✅ Created direct extraction test: {match.strip()}")
-
-                                except Exception as e:
-                                    print(f"❌ Error creating direct test: {str(e)}")
 
                 except Exception as e:
                     print(f"❌ Error in manual extraction for {file}: {str(e)}")
@@ -873,6 +859,7 @@ def extract_tests_manually(reports_dir: str) -> list:
 
     print(f"🎯 Manual extraction completed: {len(manual_tests)} tests found")
     return manual_tests
+
 
 def run_mock_analysis(reports_dir: str) -> list:
     """Fallback mock analysis when real engine is not available"""

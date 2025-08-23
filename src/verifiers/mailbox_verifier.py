@@ -9,10 +9,9 @@ import hashlib
 import logging
 from datetime import datetime
 from pathlib import Path
-from typing import Dict
+from typing import Dict, Optional
 from playwright.async_api import async_playwright, Page, Browser
 from ..models.data_models import FailedTest, MailVerificationResult
-from config.settings import settings
 
 logger = logging.getLogger(__name__)
 
@@ -20,13 +19,51 @@ logger = logging.getLogger(__name__)
 class PlaywrightMailboxVerifier:
     """Mailbox verifier with proper search logic."""
 
-    def __init__(self, password: str = None):
-        """Initialize the verifier."""
-        self.password = password or settings.MAILBOX_PASSWORD
-        self.screenshots_dir = settings.SCREENSHOTS_DIR
-        self.screenshots_dir.mkdir(exist_ok=True)
+    def __init__(
+        self,
+        password: str = None,
+        webmail_url: str = "https://outlook.office.com",
+        headless: bool = True,
+        timeout: int = 30000,
+        output_folder: str = None
+    ):
+        """Initialize the verifier with configurable parameters."""
+        self.password = password
+        self.webmail_url = webmail_url
+        self.browser_headless = headless
+        self.browser_timeout = timeout
+        self.screenshot_timeout = 5000  # 5 seconds for screenshots
+        self.search_delay_seconds = 3   # 3 seconds delay after search
+
+        # Setup screenshots directory
+        if output_folder:
+            self.screenshots_dir = Path(output_folder) / "screenshots"
+        else:
+            self.screenshots_dir = Path("output/screenshots")
+
+        self.screenshots_dir.mkdir(parents=True, exist_ok=True)
+
         self.browser = None
         self.page = None
+
+        # Email selectors for Outlook/Office365
+        self.email_selectors = {
+            'email_input': 'input[name="loginfmt"], input[type="email"]',
+            'next_button': 'input[type="submit"], button[type="submit"]',
+            'password_input': 'input[name="passwd"], input[type="password"]',
+            'signin_button': 'input[type="submit"], button[type="submit"]',
+            'stay_signed_in': 'input[type="submit"], button[type="submit"]',
+            'mailbox': '[role="main"], .ms-FocusZone'
+        }
+
+        # Search selectors
+        self.search_selectors = [
+            'input[placeholder*="Search"], input[aria-label*="Search"]',
+            '.ms-SearchBox input',
+            '[data-testid="searchbox-input"]',
+            'input[type="search"]',
+            '.searchInput'
+        ]
 
     async def verify_mail_delivery(self, failed_test: FailedTest) -> MailVerificationResult:
         """Verify mail delivery with proper search logic."""
@@ -41,7 +78,7 @@ class PlaywrightMailboxVerifier:
             verification_result = await self._search_and_verify(failed_test)
 
             # Calculate timing if possible
-            if failed_test.sent_timestamp and verification_result.verification_timestamp:
+            if hasattr(failed_test, 'sent_timestamp') and failed_test.sent_timestamp and verification_result.verification_timestamp:
                 delay = (verification_result.verification_timestamp - failed_test.sent_timestamp).total_seconds() / 60
                 verification_result.delivery_delay_minutes = delay
 
@@ -95,11 +132,11 @@ class PlaywrightMailboxVerifier:
                 quarantined_subject_found=analysis_result.get('quarantined_found', False),
                 phishing_alert_found=analysis_result.get('phishing_alert_found', False),
                 action_applied=analysis_result.get('action_applied', False),
-                expected_action=settings.get_expected_action(failed_test.mail_type),
+                expected_action=self._get_expected_action(failed_test.mail_type),
                 actual_action=analysis_result.get('actual_action', 'No action detected'),
                 screenshot_path=analysis_result['screenshot_path'],
                 verification_timestamp=actual_arrival_time or datetime.now(),
-                mailbox_html_content=await self.page.content()
+                mailbox_html_content=await self.page.content() if self.page else ""
             )
 
         except Exception as e:
@@ -165,7 +202,7 @@ class PlaywrightMailboxVerifier:
             await asyncio.sleep(0.5)
             await search_box.fill(term)
             await self.page.keyboard.press('Enter')
-            await asyncio.sleep(settings.SEARCH_DELAY_SECONDS)  # Wait for results
+            await asyncio.sleep(self.search_delay_seconds)  # Wait for results
 
             content = await self.page.content()
             found = term.lower() in content.lower()
@@ -238,9 +275,9 @@ class PlaywrightMailboxVerifier:
 
     async def _find_search_box(self):
         """Find search box."""
-        for selector in settings.SEARCH_SELECTORS:
+        for selector in self.search_selectors:
             try:
-                search_box = await self.page.wait_for_selector(selector, timeout=settings.SCREENSHOT_TIMEOUT)
+                search_box = await self.page.wait_for_selector(selector, timeout=self.screenshot_timeout)
                 if search_box:
                     return search_box
             except:
@@ -250,41 +287,41 @@ class PlaywrightMailboxVerifier:
     async def _init_browser(self):
         """Initialize browser."""
         playwright = await async_playwright().start()
-        self.browser = await playwright.chromium.launch(headless=settings.BROWSER_HEADLESS)
+        self.browser = await playwright.chromium.launch(headless=self.browser_headless)
         context = await self.browser.new_context(viewport={'width': 1920, 'height': 1080})
         self.page = await context.new_page()
 
     async def _login_to_webmail(self, email_address: str):
         """Login to webmail."""
-        await self.page.goto(settings.WEBMAIL_URL)
+        await self.page.goto(self.webmail_url)
         await self.page.wait_for_timeout(3000)
 
         # Enter email
         email_input = await self.page.wait_for_selector(
-            settings.EMAIL_SELECTORS['email_input'],
-            timeout=settings.BROWSER_TIMEOUT
+            self.email_selectors['email_input'],
+            timeout=self.browser_timeout
         )
         await email_input.fill(email_address)
 
         # Click Next
         next_button = await self.page.wait_for_selector(
-            settings.EMAIL_SELECTORS['next_button'],
-            timeout=settings.SCREENSHOT_TIMEOUT
+            self.email_selectors['next_button'],
+            timeout=self.screenshot_timeout
         )
         await next_button.click()
 
         # Enter password
         await self.page.wait_for_timeout(2000)
         password_input = await self.page.wait_for_selector(
-            settings.EMAIL_SELECTORS['password_input'],
-            timeout=settings.BROWSER_TIMEOUT
+            self.email_selectors['password_input'],
+            timeout=self.browser_timeout
         )
         await password_input.fill(self.password)
 
         # Click Sign In
         signin_button = await self.page.wait_for_selector(
-            settings.EMAIL_SELECTORS['signin_button'],
-            timeout=settings.SCREENSHOT_TIMEOUT
+            self.email_selectors['signin_button'],
+            timeout=self.screenshot_timeout
         )
         await signin_button.click()
 
@@ -292,8 +329,8 @@ class PlaywrightMailboxVerifier:
         try:
             await self.page.wait_for_timeout(3000)
             stay_signed_in = await self.page.wait_for_selector(
-                settings.EMAIL_SELECTORS['stay_signed_in'],
-                timeout=settings.SCREENSHOT_TIMEOUT
+                self.email_selectors['stay_signed_in'],
+                timeout=self.screenshot_timeout
             )
             await stay_signed_in.click()
         except:
@@ -301,8 +338,8 @@ class PlaywrightMailboxVerifier:
 
         # Wait for mailbox
         await self.page.wait_for_selector(
-            settings.EMAIL_SELECTORS['mailbox'],
-            timeout=settings.BROWSER_TIMEOUT
+            self.email_selectors['mailbox'],
+            timeout=self.browser_timeout
         )
 
     async def _take_screenshot(self, failed_test: FailedTest, suffix: str) -> str:
@@ -312,9 +349,22 @@ class PlaywrightMailboxVerifier:
         email_hash = hashlib.md5(f"{failed_test.mail_subject}_{failed_test.mail_type}".encode()).hexdigest()[:8]
         filename = f"email_verification_{email_hash}_{suffix}_{timestamp}.png"
         screenshot_path = self.screenshots_dir / filename
-        await self.page.screenshot(path=str(screenshot_path), full_page=True)
-        logger.info(f"Screenshot saved: {filename}")
+
+        if self.page:
+            await self.page.screenshot(path=str(screenshot_path), full_page=True)
+            logger.info(f"Screenshot saved: {filename}")
+
         return str(screenshot_path)
+
+    async def initialize(self):
+        """Initialize the verifier - called by main.py"""
+        # Browser initialization is done in verify_mail_delivery
+        # This method exists for compatibility with main.py expectations
+        pass
+
+    async def cleanup(self):
+        """Public cleanup method - called by main.py"""
+        await self._cleanup_browser()
 
     async def _cleanup_browser(self):
         """Clean up browser."""
@@ -450,36 +500,37 @@ class PlaywrightMailboxVerifier:
                     continue
 
             # If no specific element found, search the entire page content for full date patterns
-            page_content = await self.page.content()
+            if self.page:
+                page_content = await self.page.content()
 
-            import re
+                import re
 
-            # Look for full date patterns like "Mon 8/18/2025 9:58 AM"
-            date_patterns = [
-                r'(Mon|Tue|Wed|Thu|Fri|Sat|Sun)\s+(\d{1,2}/\d{1,2}/\d{4})\s+(\d{1,2}:\d{2}\s+(?:AM|PM))',
-                r'(\d{1,2}/\d{1,2}/\d{4})\s+(\d{1,2}:\d{2}\s+(?:AM|PM))',
-                r'Received.*?(\d{1,2}/\d{1,2}/\d{4}.*?\d{1,2}:\d{2}.*?(?:AM|PM))',
-                r'Sent.*?(\d{1,2}/\d{1,2}/\d{4}.*?\d{1,2}:\d{2}.*?(?:AM|PM))',
-            ]
+                # Look for full date patterns like "Mon 8/18/2025 9:58 AM"
+                date_patterns = [
+                    r'(Mon|Tue|Wed|Thu|Fri|Sat|Sun)\s+(\d{1,2}/\d{1,2}/\d{4})\s+(\d{1,2}:\d{2}\s+(?:AM|PM))',
+                    r'(\d{1,2}/\d{1,2}/\d{4})\s+(\d{1,2}:\d{2}\s+(?:AM|PM))',
+                    r'Received.*?(\d{1,2}/\d{1,2}/\d{4}.*?\d{1,2}:\d{2}.*?(?:AM|PM))',
+                    r'Sent.*?(\d{1,2}/\d{1,2}/\d{4}.*?\d{1,2}:\d{2}.*?(?:AM|PM))',
+                ]
 
-            for pattern in date_patterns:
-                matches = re.findall(pattern, page_content, re.IGNORECASE)
-                if matches:
-                    match = matches[0]
-                    if isinstance(match, tuple):
-                        if len(match) == 3:  # Day, Date, Time format
-                            full_date = f"{match[1]} {match[2]}"
-                        elif len(match) == 2:  # Date, Time format
-                            full_date = f"{match[0]} {match[1]}"
+                for pattern in date_patterns:
+                    matches = re.findall(pattern, page_content, re.IGNORECASE)
+                    if matches:
+                        match = matches[0]
+                        if isinstance(match, tuple):
+                            if len(match) == 3:  # Day, Date, Time format
+                                full_date = f"{match[1]} {match[2]}"
+                            elif len(match) == 2:  # Date, Time format
+                                full_date = f"{match[0]} {match[1]}"
+                            else:
+                                full_date = match[0]
                         else:
-                            full_date = match[0]
-                    else:
-                        full_date = match
+                            full_date = match
 
-                    parsed_time = self._parse_datetime_string(full_date)
-                    if parsed_time:
-                        logger.info(f"Extracted timestamp from page content: {parsed_time}")
-                        return parsed_time
+                        parsed_time = self._parse_datetime_string(full_date)
+                        if parsed_time:
+                            logger.info(f"Extracted timestamp from page content: {parsed_time}")
+                            return parsed_time
 
             logger.warning("Could not extract full email timestamp from opened email")
             return None
@@ -550,3 +601,13 @@ class PlaywrightMailboxVerifier:
         except Exception as e:
             logger.error(f"Error parsing datetime string '{date_string}': {e}")
             return None
+
+    def _get_expected_action(self, mail_type: str) -> str:
+        """Get expected action based on mail type."""
+        expected_actions = {
+            'clean': 'Deliver normally',
+            'phishing': 'Apply phishing alert',
+            'malware': 'Quarantine email',
+            'eicar': 'Quarantine email'
+        }
+        return expected_actions.get(mail_type, 'Unknown action')

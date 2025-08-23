@@ -25,47 +25,164 @@ class AllureParser:
         """Initialize the parser with reports folder path."""
         self.reports_folder = Path(reports_folder)
         self.processed_report_name = None  # Store the name of the processed report
+        self.html_content = ""  # Initialize the missing attribute
 
     def extract_failed_mail_tests(self) -> List[FailedTest]:
-        """Extract ONLY tests with AssertionError (true failures) with EMAIL-BASED deduplication."""
-
-        logger.info("Parsing Allure reports for AssertionError failures")
-
-        html_files = list(self.reports_folder.glob("*.html"))
-        if not html_files:
-            logger.error("No HTML files found")
-            return []
-
+        """
+        Extract failed email tests from Allure HTML reports.
+        This is the main entry point that processes all HTML files.
+        """
+        logger.info("🔍 Starting extraction of failed mail tests...")
         all_failed_tests = []
 
-        for html_file in html_files:
-            logger.info(f"Processing: {html_file.name}")
+        try:
+            # Process all HTML files in the reports folder
+            html_files = list(self.reports_folder.glob("*.html"))
+            logger.info(f"📄 Found {len(html_files)} HTML files to process")
 
-            # Store the first (main) report name for use in final report naming
-            if self.processed_report_name is None:
-                self.processed_report_name = html_file.stem  # filename without extension
+            if not html_files:
+                logger.warning("⚠️ No HTML files found in reports folder")
+                return []
 
-            try:
-                with open(html_file, 'r', encoding='utf-8') as f:
-                    content = f.read()
+            for html_file in html_files:
+                logger.info(f"📖 Processing file: {html_file.name}")
 
-                # Extract ONLY AssertionError failures
-                failed_tests = self._extract_assertion_error_failures_only(content, html_file.name)
+                # Store the report name for later use
+                if not self.processed_report_name:
+                    self.processed_report_name = html_file.stem
 
-                logger.info(f"   Extracted {len(failed_tests)} tests from {html_file.name}")
+                # Read the HTML content
+                try:
+                    with open(html_file, 'r', encoding='utf-8') as f:
+                        self.html_content = f.read()
 
-                # Email-based deduplication
-                unique_tests = self._deduplicate_by_email(failed_tests)
-                logger.info(f"   After deduplication: {len(unique_tests)} unique tests")
-                all_failed_tests.extend(unique_tests)
+                    logger.info(f"📖 HTML file size: {len(self.html_content)} characters")
 
-            except Exception as e:
-                logger.error(f"Error parsing {html_file.name}: {e}")
+                    # Extract failed tests from this file using the existing sophisticated logic
+                    file_tests = self._extract_assertion_error_failures_only(
+                        self.html_content,
+                        str(html_file)
+                    )
 
-        logger.info(f"Total unique emails found: {len(all_failed_tests)}")
-        self._log_final_results(all_failed_tests)
+                    logger.info(f"📧 Found {len(file_tests)} failed tests in {html_file.name}")
+                    all_failed_tests.extend(file_tests)
 
-        return all_failed_tests
+                except Exception as e:
+                    logger.error(f"❌ Error reading {html_file.name}: {e}")
+                    continue
+
+            # Deduplicate across all files
+            unique_tests = self._deduplicate_by_email(all_failed_tests)
+
+            # Log final results
+            self._log_final_results(unique_tests)
+
+            logger.info(f"✅ Extraction complete: {len(unique_tests)} unique failed email tests found")
+            return unique_tests
+
+        except Exception as e:
+            logger.error(f"❌ Error during extraction: {e}")
+            # Try fallback method if main extraction fails
+            return self._fallback_extraction()
+
+    def _fallback_extraction(self) -> List[FailedTest]:
+        """
+        Fallback extraction method using simpler base64 decoding approach.
+        This matches the manual extraction logic that was working.
+        """
+        logger.info("🔧 Attempting fallback extraction method...")
+        failed_tests = []
+
+        try:
+            if not self.html_content:
+                # Try to read the first HTML file
+                html_files = list(self.reports_folder.glob("*.html"))
+                if html_files:
+                    with open(html_files[0], 'r', encoding='utf-8') as f:
+                        self.html_content = f.read()
+
+            if not self.html_content:
+                logger.warning("⚠️ No HTML content available for fallback extraction")
+                return []
+
+            # Use the simpler approach that was working in manual extraction
+            base64_pattern = r"d\('data/attachments/[^']+','([^']+)'\)"
+            matches = re.findall(base64_pattern, self.html_content)
+
+            logger.info(f"🔍 Found {len(matches)} base64 strings to decode")
+
+            processed_subjects = set()
+
+            for i, match in enumerate(matches):
+                try:
+                    decoded = base64.b64decode(match).decode('utf-8')
+
+                    # Look for email test failures
+                    if "Email wasn't found" in decoded and "AUTO_" in decoded:
+                        subject_match = re.search(r"Subject='([^']+)'", decoded)
+                        recipient_match = re.search(r"Inbox='([^']+)'", decoded)
+
+                        if subject_match and recipient_match:
+                            subject = subject_match.group(1)
+                            recipient = recipient_match.group(1)
+
+                            # Skip duplicates
+                            if subject in processed_subjects:
+                                continue
+                            processed_subjects.add(subject)
+
+                            # Determine mail type and create test
+                            mail_type = self._determine_mail_type(subject)
+                            test_name = f"Email {mail_type.title()} Test - {subject}"
+
+                            # Create FailedTest object with proper structure
+                            failed_test = FailedTest(
+                                test_name=test_name,
+                                mail_address=recipient,
+                                mail_subject=subject,
+                                expected_behavior=self._get_expected_behavior(mail_type),
+                                mail_type=mail_type,
+                                failure_message="AssertionError: Email not found in recipient inbox",
+                                test_duration=300.0,  # 5 minutes default
+                                timestamp=datetime.now(),
+                                test_id=generate_test_id(f"{subject}_{mail_type}_{recipient}"),
+                                parameters={
+                                    'recipient': recipient,
+                                    'original_subject': subject,
+                                    'mail_type': mail_type,
+                                    'extraction_source': 'fallback_base64'
+                                },
+                                sent_timestamp=datetime.now()
+                            )
+
+                            failed_tests.append(failed_test)
+                            logger.info(f"🎯 Extracted: {mail_type.upper()} - {subject}")
+
+                except Exception as e:
+                    logger.debug(f"Failed to decode base64 string {i}: {e}")
+                    continue
+
+            logger.info(f"✅ Fallback extraction found {len(failed_tests)} unique email tests")
+            return failed_tests
+
+        except Exception as e:
+            logger.error(f"❌ Fallback extraction failed: {e}")
+            return []
+
+    def _get_expected_behavior(self, mail_type: str) -> str:
+        """Get expected behavior for mail type."""
+        try:
+            from config.settings import settings
+            return settings.EXPECTED_BEHAVIORS.get(mail_type, 'Unknown behavior')
+        except ImportError:
+            # Fallback if settings not available
+            behaviors = {
+                'clean': 'Clean email should be delivered normally',
+                'phishing': 'Phishing email should be blocked or quarantined',
+                'malware': 'Malware email should be blocked or quarantined',
+                'eicar': 'EICAR test file should be blocked or quarantined'
+            }
+            return behaviors.get(mail_type, 'Unknown behavior')
 
     def get_processed_report_name(self) -> str:
         """Get the name of the processed report for use in final report naming."""
@@ -291,8 +408,7 @@ class AllureParser:
         test_name = self._extract_test_name_from_content(content, mail_type)
 
         # Expected behaviors
-        from config.settings import settings
-        expected_behaviors = settings.EXPECTED_BEHAVIORS
+        expected_behavior = self._get_expected_behavior(mail_type)
 
         # Extract timestamp from content
         sent_timestamp = self._extract_timestamp_from_content(content)
@@ -323,7 +439,7 @@ class AllureParser:
 
         return {
             'test_name': test_name,
-            'expected_behavior': expected_behaviors.get(mail_type, 'Unknown behavior'),
+            'expected_behavior': expected_behavior,
             'mail_type': mail_type,
             'failure_message': failure_message,
             'test_duration': test_duration,
