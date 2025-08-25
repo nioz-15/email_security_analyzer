@@ -2857,7 +2857,60 @@ async def get_analysis_result(task_id: str):
 
 @app.get("/report/{task_id}")
 async def download_html_report(task_id: str):
-    """Download the HTML report"""
+    """Download the complete report folder as a ZIP file"""
+
+    if task_id not in analysis_tasks:
+        raise HTTPException(status_code=404, detail="Task not found")
+
+    task = analysis_tasks[task_id]
+
+    if task["status"] != "completed":
+        raise HTTPException(status_code=404, detail="Report not available")
+
+    # Get the task output directory
+    task_output_dir = Path("output_reports") / task_id
+    if not task_output_dir.exists():
+        raise HTTPException(status_code=404, detail="Report directory not found")
+
+    try:
+        # Create a temporary ZIP file
+        temp_zip_path = Path("temp_reports") / f"email_security_report_{task_id}.zip"
+
+        # Ensure temp_reports directory exists
+        temp_zip_path.parent.mkdir(exist_ok=True)
+
+        # Create ZIP file containing the entire task directory
+        with zipfile.ZipFile(temp_zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+            # Walk through all files in the task directory
+            for file_path in task_output_dir.rglob('*'):
+                if file_path.is_file():
+                    # Add file to ZIP with relative path from task directory
+                    arcname = file_path.relative_to(task_output_dir)
+                    zipf.write(file_path, arcname)
+                    logger.info(f"Added to ZIP: {arcname}")
+
+        # Verify ZIP was created successfully
+        if not temp_zip_path.exists():
+            raise HTTPException(status_code=500, detail="Failed to create ZIP file")
+
+        logger.info(f"Created ZIP file: {temp_zip_path} ({temp_zip_path.stat().st_size:,} bytes)")
+
+        # Return ZIP file as download
+        return FileResponse(
+            path=str(temp_zip_path),
+            filename=f"email_security_report_{task_id}.zip",
+            media_type="application/zip",
+            headers={"Content-Disposition": f"attachment; filename=email_security_report_{task_id}.zip"}
+        )
+
+    except Exception as e:
+        logger.error(f"Failed to create ZIP file for task {task_id}: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to create report ZIP: {str(e)}")
+
+
+@app.get("/report/{task_id}/html")
+async def view_html_report(task_id: str):
+    """View the HTML report in browser (for quick preview)"""
 
     if task_id not in analysis_tasks:
         raise HTTPException(status_code=404, detail="Task not found")
@@ -2871,12 +2924,38 @@ async def download_html_report(task_id: str):
     if not html_report_path or not Path(html_report_path).exists():
         raise HTTPException(status_code=404, detail="HTML report file not found")
 
+    # Return HTML for viewing in browser
     return FileResponse(
         path=html_report_path,
-        filename=f"email_security_analysis_{task_id}.html",
         media_type="text/html"
     )
 
+@app.post("/cleanup-temp")
+async def cleanup_temp_files():
+    """Clean up temporary ZIP files (optional maintenance endpoint)"""
+
+    temp_dir = Path("temp_reports")
+    if not temp_dir.exists():
+        return {"message": "No temp directory found"}
+
+    zip_files = list(temp_dir.glob("*.zip"))
+    cleaned_count = 0
+
+    for zip_file in zip_files:
+        try:
+            # Only clean up ZIP files older than 1 hour
+            file_age = time.time() - zip_file.stat().st_mtime
+            if file_age > 3600:  # 1 hour in seconds
+                zip_file.unlink()
+                cleaned_count += 1
+                logger.info(f"Cleaned up old ZIP: {zip_file.name}")
+        except Exception as e:
+            logger.warning(f"Failed to clean up {zip_file.name}: {e}")
+
+    return {
+        "message": f"Cleaned up {cleaned_count} temporary ZIP files",
+        "remaining_files": len(list(temp_dir.glob("*.zip")))
+    }
 
 @app.delete("/cleanup/{task_id}")
 async def cleanup_task(task_id: str):
